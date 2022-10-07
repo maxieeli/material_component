@@ -1,0 +1,15 @@
+packages/**/node_modules
+/packages/**/node_modules
+node_modules
+
+packages/cascader/node_modules
+
+**/node_modules
+
+packages/**/es
+/packages/**/es
+
+/.vscode
+yarn-error.log
+package-lock.json
+/coverage

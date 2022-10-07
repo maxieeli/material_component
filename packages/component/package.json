@@ -1,0 +1,21 @@
+{
+  "name": "@developerli/component",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "owenli <owenlideveloper@gmail.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "es/index",
+  "module": "es/index",
+  "types": "es/index.d.ts",
+  "files": [
+    "dist",
+    "es"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "cross-env father build"
+  }
+}
