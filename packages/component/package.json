@@ -17,5 +17,29 @@
   },
   "scripts": {
     "build": "cross-env father build"
+  },
+  "dependencies": {
+    "@ctrl/tinycolor": "^3.4.1",
+    "@developerli/basic-cascader": "^1.0.1",
+    "@developerli/basic-checkbox": "^1.0.1",
+    "@developerli/basic-dropdown": "^1.0.1",
+    "@developerli/basic-input": "^1.0.1",
+    "@developerli/basic-menu": "^1.0.1",
+    "@developerli/basic-pagination": "^1.0.1",
+    "@developerli/basic-picker": "^1.0.1",
+    "@developerli/basic-select": "^1.0.1",
+    "@developerli/basic-table": "^1.0.1",
+    "@developerli/basic-tooltip": "^1.0.1",
+    "@developerli/basic-tree": "^1.0.1",
+    "@developerli/basic-upload": "^1.0.1",
+    "@developerli/styled": "^1.0.1",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.8",
+    "lodash-es": "^4.17.21",
+    "memoize-one": "^6.0.0",
+    "rc-field-form": "^1.27.2"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.6"
   }
 }
