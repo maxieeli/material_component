@@ -13,7 +13,7 @@ export interface ButtonToken extends FullToken<'Button'> {
 
 // ============================== Shared ==============================
 const genSharedButtonStyle: GenerateStyle<ButtonToken, CSSObject> = (token): CSSObject => {
-  const { componentCls, iconCls } = token
+  const { componentCls } = token
 
   return {
     [componentCls]: {
@@ -332,7 +332,7 @@ const genTypeButtonStyle: GenerateStyle<ButtonToken> = token => {
 
 // =============================== Size ===============================
 const genSizeButtonStyle = (token: ButtonToken, sizePrefixCls: string = ''): CSSInterpolation => {
-  const { componentCls, iconCls } = token
+  const { componentCls } = token
 
   const paddingVertical = Math.max(
     0,
@@ -371,7 +371,7 @@ const genSizeButtonStyle = (token: ButtonToken, sizePrefixCls: string = ''): CSS
           transition: `width ${token.motionDurationSlow} ${token.motionEaseInOut}, opacity ${token.motionDurationSlow} ${token.motionEaseInOut}`,
         },
 
-        [`&:not(${iconOnlyCls}) ${componentCls}-loading-icon > ${iconCls}`]: {
+        [`&:not(${iconOnlyCls}) ${componentCls}-loading-icon > svg`]: {
           marginInlineEnd: token.marginXS,
         },
       },
