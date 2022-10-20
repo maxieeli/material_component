@@ -1,4 +1,4 @@
-import type { DropdownToken } from '.'
+import type { DropdownToken } from './index'
 import type { GenerateStyle } from '../../theme'
 
 const genButtonStyle: GenerateStyle<DropdownToken> = token => {

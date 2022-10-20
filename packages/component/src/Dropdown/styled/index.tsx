@@ -89,16 +89,14 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         },
 
         [`
-        &-hidden,
-        &-menu-hidden,
-        &-menu-submenu-hidden
-      `]: {
+          &-hidden,
+          &-menu-hidden,
+          &-menu-submenu-hidden
+        `]: {
           display: 'none',
         },
 
-        // =============================================================
-        // ==                          Arrow                          ==
-        // =============================================================
+        // Arrow
         // Offset the popover to account for the dropdown arrow
         [`
         &-show-arrow&-placement-topLeft,
@@ -116,11 +114,12 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           paddingTop: dropdownArrowDistance,
         },
 
-        // Note: .popover-arrow is outer, .popover-arrow:after is inner
         [`${componentCls}-arrow`]: {
           position: 'absolute',
-          zIndex: 1, // lift it up so the menu wouldn't cask shadow on it
+          zIndex: 1,
           display: 'block',
+          width: sizePopupArrow,
+          height: sizePopupArrow,
 
           ...roundedArrow(
             sizePopupArrow,
@@ -137,7 +136,9 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         &-placement-topRight > ${componentCls}-arrow
       `]: {
           bottom: dropdownArrowDistance,
-          transform: 'translateY(100%) rotate(180deg)',
+          boxShadow: token.boxShadowPopoverArrow,
+          // transform: 'translateY(100%) rotate(180deg)',
+          transform: 'rotate(45deg)',
         },
 
         [`&-placement-top > ${componentCls}-arrow`]: {
@@ -145,7 +146,8 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             _skip_check_: true,
             value: '50%',
           },
-          transform: 'translateX(-50%) translateY(100%) rotate(180deg)',
+          // transform: 'translateX(-50%) translateY(100%) rotate(180deg)',
+          transform: 'translateX(-50%) rotate(45deg)',
         },
 
         [`&-placement-topLeft > ${componentCls}-arrow`]: {
@@ -168,7 +170,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           &-placement-bottomRight > ${componentCls}-arrow
         `]: {
           top: dropdownArrowDistance,
-          transform: `translateY(-100%)`,
+          transform: `rotate(-135deg) translateY(-0.5px)`,
         },
 
         [`&-placement-bottom > ${componentCls}-arrow`]: {
@@ -176,7 +178,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             _skip_check_: true,
             value: '50%',
           },
-          transform: `translateY(-100%) translateX(-50%)`,
+          transform: `translateX(-50%) rotate(-135deg) translateY(-0.5px)`,
         },
 
         [`&-placement-bottomLeft > ${componentCls}-arrow`]: {
@@ -193,11 +195,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           },
         },
 
-        // =============================================================
-        // ==                         Motion                          ==
-        // =============================================================
-        // When position is not enough for dropdown, the placement will revert.
-        // We will handle this with revert motion name.
+        // animation motion
         [`&${muiCls}-slide-down-enter${muiCls}-slide-down-enter-active&-placement-bottomLeft,
           &${muiCls}-slide-down-appear${muiCls}-slide-down-appear-active&-placement-bottomLeft
           &${muiCls}-slide-down-enter${muiCls}-slide-down-enter-active&-placement-bottom,
@@ -231,9 +229,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
     },
 
     {
-      // =============================================================
-      // ==                          Menu                           ==
-      // =============================================================
+      // menu
       [`${componentCls} ${menuCls}`]: {
         position: 'relative',
         margin: 0,
@@ -245,11 +241,9 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         background: 'transparent',
         boxShadow: 'none',
         transformOrigin: '0 0',
-
         'ul,li': {
           listStyle: 'none',
         },
-
         ul: {
           marginInline: '0.3em',
         },
@@ -257,7 +251,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
 
       [`${componentCls}, ${componentCls}-menu-submenu`]: {
         [menuCls]: {
-          padding: dropdownEdgeChildPadding,
+          padding: `${dropdownEdgeChildPadding}px 0`,
           listStyleType: 'none',
           backgroundColor: colorBgElevated,
           backgroundClip: 'padding-box',
@@ -277,7 +271,6 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             position: 'relative',
             display: 'flex',
             alignItems: 'center',
-            borderRadius: token.radiusSM,
           },
 
           [`${menuCls}-item-icon`]: {
@@ -288,15 +281,12 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
 
           [`${menuCls}-title-content`]: {
             flex: 'auto',
-
             '> a': {
               color: 'inherit',
               transition: `all ${motionDurationFast}`,
-
               '&:hover': {
                 color: 'inherit',
               },
-
               '&::after': {
                 position: 'absolute',
                 inset: 0,
@@ -318,22 +308,18 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             transition: `all ${motionDurationFast}`,
 
             '&:first-child': !dropdownEdgeChildPadding
-              ? {
-                  borderRadius: `${radiusBase}px ${radiusBase}px 0 0`,
-                }
+              ? { borderRadius: `${radiusBase}px ${radiusBase}px 0 0` }
               : [],
 
             '&:last-child': !dropdownEdgeChildPadding
-              ? {
-                  borderRadius: `0 0 ${radiusBase}px ${radiusBase}px`,
-                }
+              ? { borderRadius: `0 0 ${radiusBase}px ${radiusBase}px` }
               : [],
 
             [`&:hover, &-active`]: {
               backgroundColor: token.controlItemBgHover,
             },
 
-            ...genFocusStyle(token),
+            // ...genFocusStyle(token),
 
             '&-selected': {
               color: token.colorPrimary,
@@ -346,24 +332,22 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             '&-disabled': {
               color: colorTextDisabled,
               cursor: 'not-allowed',
-
               '&:hover': {
                 color: colorTextDisabled,
                 backgroundColor: colorBgElevated,
                 cursor: 'not-allowed',
               },
-
               a: {
                 pointerEvents: 'none',
               },
             },
 
             '&-divider': {
-              height: 1, // By design
+              height: 1,
               margin: `${token.marginXXS}px 0`,
               overflow: 'hidden',
               lineHeight: 0,
-              backgroundColor: token.colorSplit,
+              backgroundColor: token.colorFillContent,
             },
 
             [`${componentCls}-menu-submenu-expand-icon`]: {

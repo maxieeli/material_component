@@ -1,4 +1,4 @@
-import type { DropdownToken } from '.'
+import type { DropdownToken } from './index'
 import type { GenerateStyle } from '../../theme'
 
 const genStatusStyle: GenerateStyle<DropdownToken> = token => {
@@ -11,7 +11,6 @@ const genStatusStyle: GenerateStyle<DropdownToken> = token => {
       [`${menuCls} ${itemCls}`]: {
         [`&${itemCls}-danger`]: {
           color: colorError,
-
           '&:hover': {
             color: colorTextLightSolid,
             backgroundColor: colorError,
