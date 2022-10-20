@@ -20,7 +20,8 @@ const treeNodeFX = new Keyframes('ant-tree-node-fx-do-not-use', {
 const getSwitchStyle = (prefixCls: string, token: DerivativeToken): CSSObject => ({
   [`.${prefixCls}-switcher-icon`]: {
     display: 'inline-block',
-    fontSize: 10,
+    // fontSize: 10,
+    fontSize: `${token.fontSize + 6}px`, // 20
     verticalAlign: 'baseline',
 
     svg: {
@@ -42,8 +43,8 @@ const getDropIndicatorStyle = (prefixCls: string, token: DerivativeToken) => ({
 
     '&:after': {
       position: 'absolute',
-      top: -3,
-      insetInlineStart: -6,
+      top: -4, // 3 - 4
+      insetInlineStart: -10, // 6 - 10
       width: 8,
       height: 8,
       backgroundColor: 'transparent',
@@ -64,8 +65,6 @@ type TreeToken = DerivativeToken & {
 
 export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => {
   const { treeCls, treeNodeCls, treeNodePadding, treeTitleHeight } = token
-
-  const treeCheckBoxMarginVertical = (treeTitleHeight - token.fontSizeLG) / 2
   const treeCheckBoxMarginHorizontal = token.paddingXS
 
   return {
@@ -81,7 +80,8 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
 
       // =================== Virtual List ===================
       [`${treeCls}-list-holder-inner`]: {
-        alignItems: 'flex-start',
+        // alignItems: 'flex-start',
+        alignItems: 'stretch',
       },
 
       [`&${treeCls}-block-node`]: {
@@ -91,6 +91,7 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
           // >>> Title
           [`${treeCls}-node-content-wrapper`]: {
             flex: 'auto',
+            display: 'block',
           },
 
           // >>> Drag
@@ -119,8 +120,11 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
       // ===================== TreeNode =====================
       [`${treeNodeCls}`]: {
         display: 'flex',
-        alignItems: 'flex-start',
-        padding: `0 0 ${treeNodePadding}px 0`,
+        // alignItems: 'flex-start',
+        alignItems: 'center',
+        // padding: `0 0 ${treeNodePadding}px 0`, // 8 - 4 0
+        padding: `${treeNodePadding}px 0 ${treeNodePadding}px 0`,
+        margin: `${treeNodePadding * 2}px`,
         outline: 'none',
 
         // Disabled
@@ -147,7 +151,8 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
         '&-draggable': {
           [`${treeCls}-draggable-icon`]: {
             width: treeTitleHeight,
-            lineHeight: `${treeTitleHeight}px`,
+            // lineHeight: `${treeTitleHeight}px`,
+            lineHeight: 0,
             textAlign: 'center',
             visibility: 'visible',
             opacity: 0.2,
@@ -189,8 +194,10 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
         flex: 'none',
         alignSelf: 'stretch',
         width: treeTitleHeight,
+        height: treeTitleHeight,
         margin: 0,
-        lineHeight: `${treeTitleHeight}px`,
+        // lineHeight: `${treeTitleHeight}px`,
+        lineHeight: 0,
         textAlign: 'center',
         cursor: 'pointer',
         userSelect: 'none',
@@ -200,10 +207,17 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
         },
 
         '&_close': {
-          [`${treeCls}-switcher-icon`]: {
-            svg: {
-              transform: 'rotate(-90deg)',
-            },
+          'svg': {
+            fontSize: `${token.fontSize + 6}px`, // 20
+            transform: 'rotate(-90deg)',
+            transition: 'transform .3s',
+          },
+        },
+        '&_open': {
+          'svg': {
+            fontSize: `${token.fontSize + 6}px`, // 20
+            transform: 'rotate(0deg)',
+            transition: 'transform .3s',
           },
         },
 
@@ -241,11 +255,10 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
       [`${treeCls}-checkbox`]: {
         top: 'initial',
         marginInlineEnd: treeCheckBoxMarginHorizontal,
-        marginBlockStart: treeCheckBoxMarginVertical,
+        // marginBlockStart: treeCheckBoxMarginVertical,
       },
 
       // >>> Title
-      // add `${treeCls}-checkbox + span` to cover checkbox `${checkboxCls} + span`
       [`
         ${treeCls}-node-content-wrapper,
         ${treeCls}-checkbox + span
@@ -256,7 +269,8 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
         zIndex: 'auto',
         minHeight: treeTitleHeight,
         margin: 0,
-        padding: `0 ${token.paddingXS / 2}px`,
+        // padding: `0 ${token.paddingXS / 2}px`,
+        padding: 0,
         color: 'inherit',
         lineHeight: `${treeTitleHeight}px`,
         background: 'transparent',
@@ -280,6 +294,7 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
           lineHeight: `${treeTitleHeight}px`,
           textAlign: 'center',
           verticalAlign: 'top',
+          marginRight: `${token.paddingXS / 2}px`,
 
           '&:empty': {
             display: 'none',
@@ -316,8 +331,8 @@ export const genBaseStyle = (prefixCls: string, token: TreeToken): CSSObject => 
             '&:before': {
               position: 'absolute',
               top: 0,
-              insetInlineEnd: treeTitleHeight / 2,
-              bottom: -treeNodePadding,
+              right: treeTitleHeight / 2,
+              bottom: `${-treeNodePadding * 2}px`,
               borderInlineEnd: `1px solid ${token.colorBorder}`,
               content: '""',
             },
@@ -439,7 +454,8 @@ export const genTreeStyle = (prefixCls: string, token: DerivativeToken): CSSInte
   const treeNodeCls = `${treeCls}-treenode`
 
   const treeNodePadding = token.paddingXS / 2
-  const treeTitleHeight = token.controlHeightSM
+  // const treeTitleHeight = token.controlHeightSM
+  const treeTitleHeight = token.controlHeightSM - 4 // 20
 
   const treeToken = mergeToken<TreeToken>(token, {
     treeCls,
