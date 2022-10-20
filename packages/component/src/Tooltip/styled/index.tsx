@@ -42,7 +42,7 @@ const generatorTooltipPresetColor: GenerateStyle<TooltipToken, CSSObject> = toke
 
 const genTooltipStyle: GenerateStyle<TooltipToken> = token => {
   const {
-    componentCls, // ant-tooltip
+    componentCls,
     tooltipMaxWidth,
     tooltipColor,
     tooltipBg,
@@ -53,6 +53,7 @@ const genTooltipStyle: GenerateStyle<TooltipToken> = token => {
     paddingSM,
     paddingXS,
     tooltipRadiusOuter,
+    boxShadow,
   } = token
 
   return [
@@ -74,18 +75,22 @@ const genTooltipStyle: GenerateStyle<TooltipToken> = token => {
         // Wrapper for the tooltip content
         [`${componentCls}-inner`]: {
           minWidth: controlHeight,
-          minHeight: controlHeight,
+          minHeight: `${controlHeight - 6}px`,
+          margin: `${paddingXS / 4}px`,
           padding: `${paddingSM / 2}px ${paddingXS}px`,
           color: tooltipColor,
           textAlign: 'start',
           textDecoration: 'none',
           wordWrap: 'break-word',
           backgroundColor: tooltipBg,
-          borderRadius: tooltipBorderRadius,
-          boxShadow: boxShadowSecondary,
+          borderRadius: `${tooltipBorderRadius * 2}px`,
+          boxShadow,
+          opacity: 1,
+          transform: 'none',
+          transition: 'opacity 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 133ms cubic-bezier(0.4, 0, 0.2, 1)0ms',
+          transformOrigin: 'center top',
         },
 
-        // Limit left and right placement radius
         [[
           `&-placement-left`,
           `&-placement-leftTop`,
@@ -144,14 +149,15 @@ export default (prefixCls: string, injectStyle: boolean): UseComponentStyleResul
         return []
       }
 
-      const { radiusBase, colorTextLightSolid, colorBgDefault, radiusOuter } = token
+      const { radiusBase, colorTextLightSolid, radiusOuter } = token
 
       const TooltipToken = mergeToken<TooltipToken>(token, {
         // default variables
         tooltipMaxWidth: 250,
         tooltipColor: colorTextLightSolid,
         tooltipBorderRadius: radiusBase,
-        tooltipBg: colorBgDefault,
+        // tooltipBg: colorBgDefault,
+        tooltipBg: '#616161eb',
         tooltipRadiusOuter: radiusOuter > 4 ? 4 : radiusOuter,
       })
 
@@ -162,6 +168,5 @@ export default (prefixCls: string, injectStyle: boolean): UseComponentStyleResul
       colorBgDefault: colorBgSpotlight,
     }),
   )
-
   return useOriginHook(prefixCls)
 }
