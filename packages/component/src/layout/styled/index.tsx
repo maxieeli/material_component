@@ -1,27 +1,27 @@
 import type { CSSObject } from '@developerli/styled'
-import type { FullToken, GenerateStyle } from '../../theme';
-import { genComponentStyleHook, mergeToken } from '../../theme';
+import type { FullToken, GenerateStyle } from '../../theme'
+import { genComponentStyleHook, mergeToken } from '../../theme'
 
 export interface ComponentToken {
-  colorBgHeader: string;
-  colorBgBody: string;
-  colorBgTrigger: string;
+  colorBgHeader: string
+  colorBgBody: string
+  colorBgTrigger: string
 }
 
 export interface LayoutToken extends FullToken<'Layout'> {
   // Layout
-  layoutHeaderHeight: number;
-  layoutHeaderPaddingInline: number;
-  layoutHeaderColor: string;
-  layoutFooterPadding: string;
-  layoutTriggerHeight: number;
-  layoutZeroTriggerSize: number;
+  layoutHeaderHeight: number
+  layoutHeaderPaddingInline: number
+  layoutHeaderColor: string
+  layoutFooterPadding: string
+  layoutTriggerHeight: number
+  layoutZeroTriggerSize: number
 }
 
 const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
   const {
-    muiCls, // .ant
-    componentCls, // .ant-layout
+    muiCls, // .mui
+    componentCls, // .mui-layout
     colorText,
     colorTextLightSolid,
     colorBgHeader,
@@ -37,15 +37,13 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
     motionDurationSlow,
     fontSizeBase,
     radiusBase,
-  } = token;
+  } = token
 
   return {
     [componentCls]: {
       display: 'flex',
       flex: 'auto',
       flexDirection: 'column',
-
-      /* fix firefox can't set height smaller than content on flex item */
       minHeight: 0,
       background: colorBgBody,
 
@@ -56,7 +54,6 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
       [`&${componentCls}-has-sider`]: {
         flexDirection: 'row',
         [`> ${componentCls}, > ${componentCls}-content`]: {
-          // https://segmentfault.com/a/1190000019498300
           width: 0,
         },
       },
@@ -71,8 +68,6 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
         color: layoutHeaderColor,
         lineHeight: `${layoutHeaderHeight}px`,
         background: colorBgHeader,
-        // Other components/menu/style/index.less line:686
-        // Integration with header element so menu items have the same height
         [`${muiCls}-menu`]: {
           lineHeight: 'inherit',
         },
@@ -87,15 +82,11 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
 
       [`${componentCls}-content`]: {
         flex: 'auto',
-
-        // fix firefox can't set height smaller than content on flex item
         minHeight: 0,
       },
 
       [`${componentCls}-sider`]: {
         position: 'relative',
-
-        // fix firefox can't set width smaller than content on flex item
         minWidth: 0,
         background: colorBgHeader,
         transition: `all ${motionDurationMid}`,
@@ -166,7 +157,6 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
             },
 
             '&:hover::after': {
-              // FIXME: Hardcode, but seems no need to create a token for this
               background: `rgba(255, 255, 255, 0.2)`,
             },
 
@@ -181,15 +171,15 @@ const genLayoutStyle: GenerateStyle<LayoutToken, CSSObject> = token => {
         },
       },
     },
-  };
-};
+  }
+}
 
 // ============================== Export ==============================
 export default genComponentStyleHook(
   'Layout',
   token => {
-    const { colorText, controlHeightSM, controlHeight, controlHeightLG, marginXXS } = token;
-    const layoutHeaderPaddingInline = controlHeightLG * 1.25;
+    const { colorText, controlHeightSM, controlHeight, controlHeightLG, marginXXS } = token
+    const layoutHeaderPaddingInline = controlHeightLG * 1.25
 
     const layoutToken = mergeToken<LayoutToken>(token, {
       // Layout
@@ -199,13 +189,13 @@ export default genComponentStyleHook(
       layoutFooterPadding: `${controlHeightSM}px ${layoutHeaderPaddingInline}px`,
       layoutTriggerHeight: controlHeightLG + marginXXS * 2, // = item height + margin
       layoutZeroTriggerSize: controlHeightLG,
-    });
+    })
 
-    return [genLayoutStyle(layoutToken)];
+    return [genLayoutStyle(layoutToken)]
   },
   {
     colorBgHeader: '#001529',
     colorBgBody: '#f0f2f5',
     colorBgTrigger: '#002140',
   },
-);
+)
