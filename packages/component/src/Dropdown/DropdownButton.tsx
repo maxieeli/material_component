@@ -8,7 +8,7 @@ import type { ButtonGroupProps } from '../Button/ButtonGroup'
 import { ConfigContext } from '../Provider'
 import type { DropdownProps } from './Dropdown'
 import Dropdown from './Dropdown'
-import useStyle from './style'
+import useStyle from './styled'
 
 const ButtonGroup = Button.Group
 
