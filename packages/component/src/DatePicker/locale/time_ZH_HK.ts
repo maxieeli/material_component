@@ -1,7 +1,7 @@
-import type { TimePickerLocale } from '../index';
+import type { TimePickerLocale } from '../TimePicker'
 
 const locale: TimePickerLocale = {
   placeholder: '請選擇時間',
-};
+}
 
-export default locale;
+export default locale

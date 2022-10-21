@@ -1,8 +1,8 @@
-import type { TimePickerLocale } from '../index';
+import type { TimePickerLocale } from '../TimePicker'
 
 const locale: TimePickerLocale = {
   placeholder: 'Select time',
   rangePlaceholder: ['Start time', 'End time'],
-};
+}
 
-export default locale;
+export default locale

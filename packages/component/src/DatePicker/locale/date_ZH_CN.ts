@@ -1,6 +1,6 @@
-import CalendarLocale from '@developerli/basic-picker/es/locale/zh_CN';
-import TimePickerLocale from './time_ZH_CN';
-import type { PickerLocale } from '../generatePicker';
+import CalendarLocale from '@developerli/basic-picker/es/locale/zh_CN'
+import TimePickerLocale from './time_ZH_CN'
+import type { PickerLocale } from '../generatePicker'
 
 // 统一合并为完整的 Locale
 const locale: PickerLocale = {
@@ -20,9 +20,9 @@ const locale: PickerLocale = {
   timePickerLocale: {
     ...TimePickerLocale,
   },
-};
+}
 
 // should add whitespace between char in Button
-locale.lang.ok = '确定';
+locale.lang.ok = '确定'
 
-export default locale;
+export default locale

@@ -1,6 +1,6 @@
-import CalendarLocale from '@developerli/basic-picker/es/locale/en_US';
-import TimePickerLocale from './time_EN_US';
-import type { PickerLocale } from '../generatePicker';
+import CalendarLocale from '@developerli/basic-picker/es/locale/en_US'
+import TimePickerLocale from './time_EN_US'
+import type { PickerLocale } from '../generatePicker'
 
 // Merge into a locale object
 const locale: PickerLocale = {
@@ -20,6 +20,6 @@ const locale: PickerLocale = {
   timePickerLocale: {
     ...TimePickerLocale,
   },
-};
+}
 
-export default locale;
+export default locale

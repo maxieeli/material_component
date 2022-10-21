@@ -1,6 +1,6 @@
-import CalendarLocale from '@developerli/basic-picker/es/locale/zh_HK';
-import TimePickerLocale from './time_ZH_HK';
-import type { PickerLocale } from '../generatePicker';
+import CalendarLocale from '@developerli/basic-picker/es/locale/zh_HK'
+import TimePickerLocale from './time_ZH_HK'
+import type { PickerLocale } from '../generatePicker'
 
 // 统一合并为完整的 Locale
 const locale: PickerLocale = {
@@ -20,8 +20,8 @@ const locale: PickerLocale = {
   timePickerLocale: {
     ...TimePickerLocale,
   },
-};
+}
 
-locale.lang.ok = '確 定';
+locale.lang.ok = '確 定'
 
-export default locale;
+export default locale
