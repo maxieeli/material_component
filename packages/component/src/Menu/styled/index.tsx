@@ -404,7 +404,7 @@ export default (prefixCls: string, injectStyle: boolean): UseComponentStyleResul
         menuArrowSize,
         menuHorizontalHeight: controlHeightLG * 1.15,
         menuArrowOffset: `${menuArrowSize * 0.25}px`,
-        menuPanelMaskInset: -7, // Still a hardcode here since it's offset by rc-align
+        menuPanelMaskInset: -7,
       })
 
       const menuDarkToken = mergeToken<MenuToken>(
