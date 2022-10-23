@@ -34,7 +34,6 @@ export const genCheckboxStyle: GenerateStyle<CheckboxToken> = token => {
       // Group
       [`${checkboxCls}-group`]: {
         ...resetComponent(token),
-
         display: 'inline-flex',
       },
 
@@ -51,8 +50,6 @@ export const genCheckboxStyle: GenerateStyle<CheckboxToken> = token => {
           overflow: 'hidden',
           content: "'\\a0'",
         },
-
-        // Checkbox near checkbox
         '& + &': {
           marginInlineStart: token.marginXS,
         },
@@ -96,7 +93,9 @@ export const genCheckboxStyle: GenerateStyle<CheckboxToken> = token => {
           width: `${token.checkboxSize + 2}px`, // 16 - 18
           height: `${token.checkboxSize + 2}px`, // 16 - 18
           backgroundColor: token.colorBgContainer,
-          border: `${token.controlLineWidth}px ${token.controlLineType} ${token.colorBorder}`,
+          borderWidth: `${token.controlLineWidth + 1}px`,
+          borderStyle: token.controlLineType,
+          borderColor: token.colorTextLabel,
           borderRadius: token.controlRadius,
           borderCollapse: 'separate',
           transition: `all ${token.motionDurationSlow}`,

@@ -100,13 +100,16 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
                 '&:hover': {
                   background: token.controlItemBgHover,
                 },
-                ' &-disabled': {
+                '&-disabled': {
                   color: token.colorTextDisabled,
                   cursor: 'not-allowed',
 
                   '&:hover': {
                     background: 'transparent',
                   },
+                  'svg': {
+                    color: token.colorTextDisabled,
+                  }
                 },
 
                 [`&-active:not(${cascaderMenuItemCls}-disabled)`]: {
@@ -118,6 +121,10 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
 
                 '&-content': {
                   flex: 'auto',
+                },
+                
+                ['> svg']: {
+                  fontSize: token.fontSizeXL,
                 },
 
                 '&-keyword': {
