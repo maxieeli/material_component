@@ -63,12 +63,13 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         },
         zIndex: zIndexPopup,
         display: 'block',
-
-        // A placeholder out of dropdown visible range to avoid close when user moving
+        borderRadius: token.radiusBase * 2,
+        outline: 0,
+        boxShadow: token.boxShadow,
+        transition: 'box-shadow .3s cubic-bezier(.4, 0, .2, 1) 0ms',
         '&::before': {
           position: 'absolute',
           insetBlock: -dropdownArrowDistance + sizePopupArrow,
-          // insetInlineStart: -7, // FIXME: Seems not work for hidden element
           zIndex: -9999,
           opacity: 0.0001,
           content: '""',
@@ -97,7 +98,6 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         },
 
         // Arrow
-        // Offset the popover to account for the dropdown arrow
         [`
         &-show-arrow&-placement-topLeft,
         &-show-arrow&-placement-top,
@@ -137,7 +137,6 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
       `]: {
           bottom: dropdownArrowDistance,
           boxShadow: token.boxShadowPopoverArrow,
-          // transform: 'translateY(100%) rotate(180deg)',
           transform: 'rotate(45deg)',
         },
 
@@ -146,7 +145,6 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             _skip_check_: true,
             value: '50%',
           },
-          // transform: 'translateX(-50%) translateY(100%) rotate(180deg)',
           transform: 'translateX(-50%) rotate(45deg)',
         },
 
@@ -255,9 +253,9 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           listStyleType: 'none',
           backgroundColor: colorBgElevated,
           backgroundClip: 'padding-box',
-          borderRadius: token.controlRadiusLG,
+          borderRadius: token.controlRadius,
           outline: 'none',
-          boxShadow: token.boxShadowSecondary,
+          boxShadow: token.boxShadow,
           ...genFocusStyle(token),
 
           [`${menuCls}-item-group-title`]: {

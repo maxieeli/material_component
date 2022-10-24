@@ -1,27 +1,15 @@
 import type { CSSObject } from '@developerli/styled'
-import { genCollapseMotion } from '../../style/motion';
-import type { AliasToken, FullToken, GenerateStyle } from '../../theme';
-import { genComponentStyleHook, mergeToken } from '../../theme';
-import { resetComponent } from '../../style';
+import { genCollapseMotion } from '../../style/motion'
+import type { AliasToken, FullToken, GenerateStyle } from '../../theme'
+import { genComponentStyleHook, mergeToken } from '../../theme'
+import { resetComponent } from '../../style'
 
 interface FormToken extends FullToken<'Form'> {
-  formItemCls: string;
-  rootPrefixCls: string;
+  formItemCls: string
+  rootPrefixCls: string
 }
 
 const resetForm = (token: AliasToken): CSSObject => ({
-  legend: {
-    display: 'block',
-    width: '100%',
-    marginBottom: token.marginLG,
-    padding: 0,
-    color: token.colorTextDescription,
-    fontSize: token.fontSizeLG,
-    lineHeight: 'inherit',
-    border: 0,
-    borderBottom: `${token.controlLineWidth}px ${token.controlLineType} ${token.colorBorder}`,
-  },
-
   label: {
     fontSize: token.fontSize,
   },
@@ -66,7 +54,7 @@ const resetForm = (token: AliasToken): CSSObject => ({
     fontSize: token.fontSize,
     lineHeight: token.lineHeight,
   },
-});
+})
 
 const genFormSize = (token: FormToken, height: number): CSSObject => ({
   [`${token.formItemCls}-label > label`]: {
@@ -76,10 +64,10 @@ const genFormSize = (token: FormToken, height: number): CSSObject => ({
   [`${token.formItemCls}-control-input`]: {
     minHeight: height,
   },
-});
+})
 
 const genFormStyle: GenerateStyle<FormToken> = token => {
-  const { componentCls } = token;
+  const { componentCls } = token
 
   return {
     [token.componentCls]: {
@@ -91,9 +79,7 @@ const genFormStyle: GenerateStyle<FormToken> = token => {
         paddingInlineEnd: token.paddingSM,
       },
 
-      // ================================================================
-      // =                             Size                             =
-      // ================================================================
+      // Size
       '&-small': {
         ...genFormSize(token, token.controlHeightSM),
       },
@@ -102,11 +88,11 @@ const genFormStyle: GenerateStyle<FormToken> = token => {
         ...genFormSize(token, token.controlHeightLG),
       },
     },
-  };
-};
+  }
+}
 
 const genFormItemStyle: GenerateStyle<FormToken> = token => {
-  const { formItemCls, componentCls, rootPrefixCls } = token;
+  const { formItemCls, componentCls, rootPrefixCls } = token
 
   return {
     [formItemCls]: {
@@ -136,9 +122,7 @@ const genFormItemStyle: GenerateStyle<FormToken> = token => {
         },
       },
 
-      // ==============================================================
-      // =                            Label                           =
-      // ==============================================================
+      // Label
       [`${formItemCls}-label`]: {
         display: 'inline-block',
         flexGrow: 0,
@@ -219,9 +203,7 @@ const genFormItemStyle: GenerateStyle<FormToken> = token => {
         },
       },
 
-      // ==============================================================
-      // =                            Input                           =
-      // ==============================================================
+      // Input
       [`${formItemCls}-control`]: {
         display: 'flex',
         flexDirection: 'column',
@@ -245,16 +227,14 @@ const genFormItemStyle: GenerateStyle<FormToken> = token => {
         },
       },
 
-      // ==============================================================
-      // =                           Explain                          =
-      // ==============================================================
+      // Explain
       [formItemCls]: {
         '&-explain, &-extra': {
           clear: 'both',
           color: token.colorTextDescription,
           fontSize: token.fontSize,
           lineHeight: token.lineHeight,
-          transition: `color ${token.motionDurationMid} ${token.motionEaseOut}`, // sync input color transition
+          transition: `color ${token.motionDurationMid} ${token.motionEaseOut}`,
         },
 
         '&-explain-connected': {
@@ -281,13 +261,12 @@ const genFormItemStyle: GenerateStyle<FormToken> = token => {
         opacity: 1,
       },
 
-      // ==============================================================
-      // =                        Feedback Icon                       =
-      // ==============================================================
+      // Feedback Icon
       [`${formItemCls}-feedback-icon`]: {
         fontSize: token.fontSize,
         textAlign: 'center',
         visibility: 'visible',
+        lineHeight: 0,
         animationDuration: token.motionDurationMid,
         animationTimingFunction: token.motionEaseOutBack,
         pointerEvents: 'none',
@@ -307,13 +286,17 @@ const genFormItemStyle: GenerateStyle<FormToken> = token => {
         '&-validating': {
           color: token.colorPrimary,
         },
+
+        'svg': {
+          fontSize: token.fontSizeLG + 2,
+        }
       },
     },
-  };
-};
+  }
+}
 
 const genFormMotionStyle: GenerateStyle<FormToken> = token => {
-  const { componentCls, rootPrefixCls } = token;
+  const { componentCls, rootPrefixCls } = token
 
   return {
     [componentCls]: {
@@ -361,11 +344,11 @@ const genFormMotionStyle: GenerateStyle<FormToken> = token => {
         },
       },
     },
-  };
-};
+  }
+}
 
 const genHorizontalStyle: GenerateStyle<FormToken> = token => {
-  const { componentCls, formItemCls, rootPrefixCls } = token;
+  const { componentCls, formItemCls, rootPrefixCls } = token
 
   return {
     [`${componentCls}-horizontal`]: {
@@ -377,15 +360,15 @@ const genHorizontalStyle: GenerateStyle<FormToken> = token => {
         flex: '1 1 0',
         minWidth: 0,
       },
-      [`${formItemCls}-label.${rootPrefixCls}-col-24 + ${formItemCls}-control`]: {
+      [`${formItemCls}-label + ${formItemCls}-control`]: {
         minWidth: 'unset',
       },
     },
-  };
-};
+  }
+}
 
 const genInlineStyle: GenerateStyle<FormToken> = token => {
-  const { componentCls, formItemCls } = token;
+  const { componentCls, formItemCls } = token
 
   return {
     [`${componentCls}-inline`]: {
@@ -421,8 +404,8 @@ const genInlineStyle: GenerateStyle<FormToken> = token => {
         },
       },
     },
-  };
-};
+  }
+}
 
 const makeVerticalLayoutLabel = (token: FormToken): CSSObject => ({
   margin: 0,
@@ -437,10 +420,10 @@ const makeVerticalLayoutLabel = (token: FormToken): CSSObject => ({
       display: 'none',
     },
   },
-});
+})
 
 const makeVerticalLayout = (token: FormToken): CSSObject => {
-  const { componentCls, formItemCls } = token;
+  const { componentCls, formItemCls } = token
 
   return {
     [`${formItemCls} ${formItemCls}-label`]: {
@@ -457,11 +440,11 @@ const makeVerticalLayout = (token: FormToken): CSSObject => {
         },
       },
     },
-  };
-};
+  }
+}
 
 const genVerticalStyle: GenerateStyle<FormToken> = token => {
-  const { componentCls, formItemCls, rootPrefixCls } = token;
+  const { componentCls, formItemCls, rootPrefixCls } = token
 
   return {
     [`${componentCls}-vertical`]: {
@@ -480,16 +463,14 @@ const genVerticalStyle: GenerateStyle<FormToken> = token => {
       },
     },
 
-    [`${componentCls}-vertical ${formItemCls}-label,
-      .${rootPrefixCls}-col-24${formItemCls}-label,
-      .${rootPrefixCls}-col-xl-24${formItemCls}-label`]: {
+    [`${componentCls}-vertical ${formItemCls}-label`]: {
       ...makeVerticalLayoutLabel(token),
     },
 
     [`@media (max-width: ${token.screenSMMax}px)`]: {
       ...makeVerticalLayout(token),
       [componentCls]: {
-        [`.${rootPrefixCls}-col-xs-24${formItemCls}-label`]: {
+        [`${formItemCls}-label`]: {
           ...makeVerticalLayoutLabel(token),
         },
       },
@@ -497,7 +478,7 @@ const genVerticalStyle: GenerateStyle<FormToken> = token => {
 
     [`@media (max-width: ${token.screenSMMax}px)`]: {
       [componentCls]: {
-        [`.${rootPrefixCls}-col-sm-24${formItemCls}-label`]: {
+        [`${formItemCls}-label`]: {
           ...makeVerticalLayoutLabel(token),
         },
       },
@@ -505,7 +486,7 @@ const genVerticalStyle: GenerateStyle<FormToken> = token => {
 
     [`@media (max-width: ${token.screenMDMax}px)`]: {
       [componentCls]: {
-        [`.${rootPrefixCls}-col-md-24${formItemCls}-label`]: {
+        [`${formItemCls}-label`]: {
           ...makeVerticalLayoutLabel(token),
         },
       },
@@ -513,20 +494,20 @@ const genVerticalStyle: GenerateStyle<FormToken> = token => {
 
     [`@media (max-width: ${token.screenLGMax}px)`]: {
       [componentCls]: {
-        [`.${rootPrefixCls}-col-lg-24${formItemCls}-label`]: {
+        [`${formItemCls}-label`]: {
           ...makeVerticalLayoutLabel(token),
         },
       },
     },
-  };
-};
+  }
+}
 
 // ============================== Export ==============================
 export default genComponentStyleHook('Form', (token, { rootPrefixCls }) => {
   const formToken = mergeToken<FormToken>(token, {
     formItemCls: `${token.componentCls}-item`,
     rootPrefixCls,
-  });
+  })
 
   return [
     genFormStyle(formToken),
@@ -536,5 +517,5 @@ export default genComponentStyleHook('Form', (token, { rootPrefixCls }) => {
     genInlineStyle(formToken),
     genVerticalStyle(formToken),
     genCollapseMotion(formToken),
-  ];
-});
+  ]
+})
