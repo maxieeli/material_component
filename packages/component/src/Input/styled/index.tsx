@@ -34,29 +34,11 @@ export const genHoverStyle = (token: InputToken): CSSObject => ({
   borderInlineEndWidth: token.controlLineWidth,
 })
 
-export const genActiveStyle = (token: InputToken) => ({
-  borderColor: token.inputBorderHoverColor,
-  boxShadow: `0 0 0 ${token.controlOutlineWidth}px ${token.controlOutline}`,
-  borderInlineEndWidth: token.controlLineWidth,
-  outline: 0,
-})
-
-export const genDisabledStyle = (token: InputToken): CSSObject => ({
-  color: token.colorTextDisabled,
-  backgroundColor: token.colorBgContainerDisabled,
-  borderColor: token.colorBorder,
-  boxShadow: 'none',
-  cursor: 'not-allowed',
-  opacity: 1,
-
-  '&:hover': {
-    ...genHoverStyle(mergeToken<InputToken>(token, { inputBorderHoverColor: token.colorBorder })),
-  },
-})
-
 const genInputLargeStyle = (token: InputToken): CSSObject => {
-  const { inputPaddingVerticalLG, inputPaddingHorizontal, fontSizeLG, controlRadiusLG } = token
-
+  const {
+    inputPaddingVerticalLG, inputPaddingHorizontal,
+    fontSizeLG, controlRadiusLG,
+  } = token
   return {
     padding: `${inputPaddingVerticalLG}px ${inputPaddingHorizontal}px`,
     fontSize: fontSizeLG,
@@ -69,122 +51,8 @@ export const genInputSmallStyle = (token: InputToken): CSSObject => ({
   borderRadius: token.controlRadiusSM,
 })
 
-export const genStatusStyle = (token: InputToken): CSSObject => {
-  const {
-    prefixCls,
-    colorError,
-    colorWarning,
-    colorErrorOutline,
-    colorWarningOutline,
-    colorErrorBorderHover,
-    colorWarningBorderHover,
-  } = token
-
-  return {
-    '&-status-error:not(&-disabled):not(&-borderless)&': {
-      borderColor: colorError,
-
-      '&:hover': {
-        borderColor: colorErrorBorderHover,
-      },
-
-      '&:focus, &-focused': {
-        ...genActiveStyle(
-          mergeToken<InputToken>(token, {
-            inputBorderActiveColor: colorError,
-            inputBorderHoverColor: colorError,
-            controlOutline: colorErrorOutline,
-          }),
-        ),
-      },
-
-      [`.${prefixCls}-prefix`]: {
-        color: colorError,
-      },
-    },
-    '&-status-warning:not(&-disabled):not(&-borderless)&': {
-      borderColor: colorWarning,
-
-      '&:hover': {
-        borderColor: colorWarningBorderHover,
-      },
-
-      '&:focus, &-focused': {
-        ...genActiveStyle(
-          mergeToken<InputToken>(token, {
-            inputBorderActiveColor: colorWarning,
-            inputBorderHoverColor: colorWarning,
-            controlOutline: colorWarningOutline,
-          }),
-        ),
-      },
-
-      [`.${prefixCls}-prefix`]: {
-        color: colorWarning,
-      },
-    },
-  }
-}
-
-export const genBasicInputStyle = (token: InputToken): CSSObject => ({
-  position: 'relative',
-  display: 'inline-block',
-  width: '100%',
-  minWidth: 0,
-  padding: `${token.inputPaddingVertical}px ${token.inputPaddingHorizontal}px`,
-  color: token.colorText,
-  fontSize: token.fontSize,
-  lineHeight: token.lineHeight,
-  backgroundColor: token.colorBgContainer,
-  backgroundImage: 'none',
-  borderWidth: token.controlLineWidth,
-  borderStyle: token.controlLineType,
-  borderColor: token.colorBorder,
-  borderRadius: token.controlRadius,
-  transition: `all ${token.motionDurationFast}`,
-  ...genPlaceholderStyle(token.colorTextPlaceholder),
-
-  '&:hover': {
-    ...genHoverStyle(token),
-  },
-
-  '&:focus, &-focused': {
-    ...genActiveStyle(token),
-  },
-
-  '&-disabled, &[disabled]': {
-    ...genDisabledStyle(token),
-  },
-
-  '&-borderless': {
-    '&, &:hover, &:focus, &-focused, &-disabled, &[disabled]': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      boxShadow: 'none',
-    },
-  },
-
-  // Reset height for `textarea`s
-  'textarea&': {
-    maxWidth: '100%', // prevent textearea resize from coming out of its container
-    height: 'auto',
-    minHeight: token.controlHeight,
-    lineHeight: token.lineHeight,
-    verticalAlign: 'bottom',
-    transition: `all ${token.motionDurationSlow}, height 0s`,
-  },
-
-  // Size
-  '&-lg': {
-    ...genInputLargeStyle(token),
-  },
-  '&-sm': {
-    ...genInputSmallStyle(token),
-  },
-})
-
 export const genInputGroupStyle = (token: InputToken): CSSObject => {
-  const { prefixCls, muiCls } = token
+  const { prefixCls, componentCls, muiCls } = token
 
   return {
     position: 'relative',
@@ -193,38 +61,19 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
     borderCollapse: 'separate',
     borderSpacing: 0,
 
-    // Undo padding and float of grid classes
-    [`&[class*='col-']`]: {
-      paddingInlineEnd: token.paddingXS,
-
-      '&:last-child': {
-        paddingInlineEnd: 0,
-      },
-    },
-
-    // Sizing options
-    [`&-lg .${prefixCls}, &-lg > .${prefixCls}-group-addon`]: {
-      ...genInputLargeStyle(token),
-    },
-
-    [`&-sm .${prefixCls}, &-sm > .${prefixCls}-group-addon`]: {
-      ...genInputSmallStyle(token),
-    },
-
-    [`&-lg ${muiCls}-select-single ${muiCls}-select-selector`]: {
-      height: token.controlHeightLG,
-    },
-
-    [`&-sm ${muiCls}-select-single ${muiCls}-select-selector`]: {
-      height: token.controlHeightSM,
-    },
-
-    [`> .${prefixCls}`]: {
-      display: 'table-cell',
-
-      '&:not(:first-child):not(:last-child)': {
-        borderRadius: 0,
-      },
+    [`${componentCls}-wrapper`]: {
+      boxSizing: 'border-box',
+      margin: 0,
+      padding: '2px 0',
+      color: '#000000d9',
+      fontSize: token.fontSize,
+      position: 'relative',
+      display: 'flex',
+      width: '100%',
+      alignItems: 'center',
+      paddingInlineStart: 2,
+      paddingInlineEnd: 2,
+      borderRadius: 4,
     },
 
     [`.${prefixCls}-group`]: {
@@ -247,42 +96,19 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
         position: 'relative',
         padding: `0 ${token.inputPaddingHorizontal}px`,
         color: token.colorText,
-        fontWeight: 'normal',
+        fontWeight: '400',
         fontSize: token.fontSize,
         textAlign: 'center',
         backgroundColor: token.colorFillAlter,
-        border: `${token.controlLineWidth}px ${token.controlLineType} ${token.colorBorder}`,
-        borderRadius: token.controlRadius,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderRight: 0,
         transition: `all ${token.motionDurationSlow}`,
-
-        // Reset Select's style in addon
-        [`${muiCls}-select`]: {
-          margin: `-${token.inputPaddingVertical + 1}px -${token.inputPaddingHorizontal}px`,
-
-          [`&${muiCls}-select-single:not(${muiCls}-select-customize-input)`]: {
-            [`${muiCls}-select-selector`]: {
-              backgroundColor: 'inherit',
-              border: `${token.controlLineWidth}px ${token.controlLineType} transparent`,
-              boxShadow: 'none',
-            },
-          },
-
-          '&-open, &-focused': {
-            [`${muiCls}-select-selector`]: {
-              color: token.colorPrimary,
-            },
-          },
-        },
-
-        [`${muiCls}-cascader-picker`]: {
-          margin: `-9px -${token.inputPaddingHorizontal}px`,
-          backgroundColor: 'transparent',
-          [`${muiCls}-cascader-input`]: {
-            textAlign: 'start',
-            border: 0,
-            boxShadow: 'none',
-          },
-        },
+        whiteSpace: 'nowrap',
+        verticalAlign: 'middle',
+        height: `${token.controlHeight + 4}px`, // 36
+        lineHeight: `${token.controlHeight + 4}px`,
+        width: 'auto',
       },
 
       '&-addon:first-child': {
@@ -295,13 +121,17 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
     },
 
     [`.${prefixCls}`]: {
-      float: 'inline-start',
+      float: 'left',
       width: '100%',
       marginBottom: 0,
       textAlign: 'inherit',
+      borderRadius: 0,
+      flex: 1,
+      paddingTop: 0,
+      paddingBottom: 0,
 
       '&:focus': {
-        zIndex: 1, // Fix https://gw.alipayobjects.com/zos/rmsportal/DHNpoqfMXSfrSnlZvhsJ.png
+        zIndex: 1,
         borderInlineEndWidth: 1,
       },
 
@@ -319,12 +149,6 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
     [`> .${prefixCls}:first-child, .${prefixCls}-group-addon:first-child`]: {
       borderStartEndRadius: 0,
       borderEndEndRadius: 0,
-
-      // Reset Select's style in addon
-      [`${muiCls}-select ${muiCls}-select-selector`]: {
-        borderStartEndRadius: 0,
-        borderEndEndRadius: 0,
-      },
     },
 
     [`> .${prefixCls}-affix-wrapper`]: {
@@ -342,12 +166,6 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
     [`> .${prefixCls}:last-child, .${prefixCls}-group-addon:last-child`]: {
       borderStartStartRadius: 0,
       borderEndStartRadius: 0,
-
-      // Reset Select's style in addon
-      [`${muiCls}-select ${muiCls}-select-selector`]: {
-        borderStartStartRadius: 0,
-        borderEndStartRadius: 0,
-      },
     },
 
     [`.${prefixCls}-affix-wrapper`]: {
@@ -408,167 +226,210 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
       [`.${prefixCls}`]: {
         float: 'none',
       },
-
-      // reset border for Select, DatePicker, AutoComplete, Cascader, Mention, TimePicker, Input
-      [`& > ${muiCls}-select > ${muiCls}-select-selector,
-      & > ${muiCls}-select-auto-complete .${prefixCls},
-      & > ${muiCls}-cascader-picker .${prefixCls},
-      & > .${prefixCls}-group-wrapper .${prefixCls}`]: {
-        borderInlineEndWidth: token.controlLineWidth,
-        borderRadius: 0,
-
-        '&:hover': {
-          zIndex: 1,
-        },
-
-        '&:focus': {
-          zIndex: 1,
-        },
-      },
-
-      [`& > ${muiCls}-select-focused`]: {
-        zIndex: 1,
-      },
-
-      // update z-index for arrow icon
-      [`& > ${muiCls}-select > ${muiCls}-select-arrow`]: {
-        zIndex: 1,
-      },
-
-      [`& > *:first-child,
-      & > ${muiCls}-select:first-child > ${muiCls}-select-selector,
-      & > ${muiCls}-select-auto-complete:first-child .${prefixCls},
-      & > ${muiCls}-cascader-picker:first-child .${prefixCls}`]: {
-        borderStartStartRadius: token.controlRadius,
-        borderEndStartRadius: token.controlRadius,
-      },
-
-      [`& > *:last-child,
-      & > ${muiCls}-select:last-child > ${muiCls}-select-selector,
-      & > ${muiCls}-cascader-picker:last-child .${prefixCls},
-      & > ${muiCls}-cascader-picker-focused:last-child .${prefixCls}`]: {
-        borderInlineEndWidth: token.controlLineWidth,
-        borderStartEndRadius: token.controlRadius,
-        borderEndEndRadius: token.controlRadius,
-      },
-
-      [`& > ${muiCls}-select-auto-complete .${prefixCls}`]: {
-        verticalAlign: 'top',
-      },
-
-      [`.${prefixCls}-group-wrapper + .${prefixCls}-group-wrapper`]: {
-        marginInlineStart: -token.controlLineWidth,
-        [`.${prefixCls}-affix-wrapper`]: {
-          borderRadius: 0,
-        },
-      },
-
-      [`.${prefixCls}-group-wrapper:not(:last-child)`]: {
-        [`&.${prefixCls}-search > .${prefixCls}-group`]: {
-          [`& > .${prefixCls}-group-addon > .${prefixCls}-search-button`]: {
-            borderRadius: 0,
-          },
-
-          [`& > .${prefixCls}`]: {
-            borderStartStartRadius: token.controlRadius,
-            borderStartEndRadius: 0,
-            borderEndEndRadius: 0,
-            borderEndStartRadius: token.controlRadius,
-          },
-        },
-      },
     },
   }
 }
 
-const genInputStyle: GenerateStyle<InputToken> = (token: InputToken) => {
-  const { prefixCls, controlHeightSM, controlLineWidth } = token
-
-  const FIXED_CHROME_COLOR_HEIGHT = 16
-  const colorSmallPadding =
-    (controlHeightSM - controlLineWidth * 2 - FIXED_CHROME_COLOR_HEIGHT) / 2
-
+const genGroupStyle = (token: InputToken): CSSObject => {
+  const {
+    prefixCls, componentCls,
+    colorError, colorSuccess,
+  } = token
   return {
-    [`.${prefixCls}`]: {
-      ...resetComponent(token),
-      ...genBasicInputStyle(token),
-      ...genStatusStyle(token),
-
-      '&[type="color"]': {
-        height: token.controlHeight,
-
-        [`&.${prefixCls}-lg`]: {
-          height: token.controlHeightLG,
-        },
-        [`&.${prefixCls}-sm`]: {
-          height: controlHeightSM,
-          paddingTop: colorSmallPadding,
-          paddingBottom: colorSmallPadding,
+    [`${componentCls}-group-wrapper`]: {
+      display: 'inline-block',
+      width: '100%',
+      textAlign: 'center',
+      verticalAlign: 'top',
+      ...genInputGroupStyle(token),
+      '&-status-error': {
+        [`.${prefixCls}-group-addon`]: {
+          color: colorError,
+          borderColor: colorError,
         },
       },
-    },
+      '&-status-warning': {
+        [`.${prefixCls}-group-addon`]: {
+          color: colorSuccess,
+          borderColor: colorSuccess,
+        },
+      },
+    }
   }
 }
 
-const genAllowClearStyle = (token: InputToken): CSSObject => {
+export const genActiveStyle = (token: InputToken) => ({
+  borderColor: token.inputBorderHoverColor,
+  borderInlineEndWidth: token.controlLineWidth,
+  outline: 0,
+})
+
+const genStatusLabelStyle = (token: InputToken): CSSObject => {
   const { prefixCls } = token
   return {
-    // ========================= Input =========================
-    [`.${prefixCls}-clear-icon`]: {
-      margin: 0,
-      color: token.colorIcon,
-      fontSize: token.fontSizeIcon,
-      verticalAlign: -1,
-      cursor: 'pointer',
-      transition: `color ${token.motionDurationSlow}`,
+    [`.${prefixCls}-label-error`]: {
+      color: token.colorError,
+    },
+    [`.${prefixCls}-label-warning`]: {
+      color: token.colorWarning,
+    },
+  }
+}
 
-      '&:hover': {
-        color: token.colorTextDescription,
+const genActiveLabelStyle = (token: InputToken): CSSObject => {
+  const { prefixCls } = token
+  return {
+    [`.${prefixCls}-text-outlined:hover`]: {
+      borderColor: token.colorPrimaryText,
+    },
+    [`.${prefixCls}-outlined`]: {
+      borderColor: token.colorPrimaryText,
+      borderWidth: 2,
+      color: token.colorPrimaryText,
+    },
+    [`.${prefixCls}-label`]: {
+      padding: '0 5px',
+      transform: 'translate(14px -8px) scale(0.75)',
+      pointerEvents: 'none',
+      userSelect: 'none',
+      color: token.colorPrimaryText,
+      top: '-2px',
+    },
+    [`.${prefixCls}-affix-wrapper`]: {
+      '&::-webkit-input-placeholder': {
+        color: 'inherit',
       },
-
-      '&:active': {
-        color: token.colorText,
+      '&::-moz-input-placeholder': {
+        color: 'inherit',
       },
-
-      '&-hidden': {
-        visibility: 'hidden',
-      },
-
-      '&-has-suffix': {
-        margin: `0 ${token.inputAffixPadding}px`,
+      'input:placeholder': {
+        color: 'inherit',
       },
     },
+    ...genStatusLabelStyle(token),
+  }
+}
 
-    // ======================= TextArea ========================
-    '&-textarea-with-clear-btn': {
-      padding: '0 !important',
-      border: '0 !important',
+export const genDisabledStyle = (token: InputToken): CSSObject => ({
+  color: token.colorTextDisabled,
+  backgroundColor: token.colorBgContainerDisabled,
+  borderColor: token.colorBorder,
+  boxShadow: 'none',
+  cursor: 'not-allowed',
+  opacity: 1,
 
-      [`.${prefixCls}-clear-icon`]: {
-        position: 'absolute',
-        insetBlockStart: token.paddingXS,
-        insetInlineEnd: token.paddingXS,
-        zIndex: 1,
+  '&:hover': {
+    ...genHoverStyle(mergeToken<InputToken>(token, { inputBorderHoverColor: token.colorBorder })),
+  },
+})
+
+export const genHasLabelStyle = (token: InputToken): CSSObject => {
+  return {
+    'input::-webkit-input-placeholder': {
+      color: 'transparent',
+    },
+    'input::-moz-input-placeholder': {
+      color: 'transparent',
+    },
+    'input:placeholder': {
+      color: 'transparent',
+    },
+  }
+}
+
+export const genFocusedStyle = (token: InputToken): CSSObject => {
+  const { componentCls } = token
+  return {
+    [`${componentCls}-focused`]: {
+      ...genActiveStyle(token),
+      ...genActiveLabelStyle(token),
+    }
+  }
+}
+
+export const genStatusStyle = (token: InputToken): CSSObject => {
+  const {
+    prefixCls,
+    colorError,
+    colorWarning,
+    colorErrorOutline,
+    colorWarningOutline,
+    colorErrorBorderHover,
+    colorWarningBorderHover,
+  } = token
+
+  return {
+    '&-status-error:not(&-disabled):not(&-borderless)&': {
+      borderColor: colorError,
+
+      '&:hover': {
+        borderColor: colorErrorBorderHover,
+      },
+
+      '&:focus, &-focused': {
+        ...genActiveStyle(
+          mergeToken<InputToken>(token, {
+            inputBorderActiveColor: colorError,
+            inputBorderHoverColor: colorError,
+            controlOutline: colorErrorOutline,
+          }),
+        ),
+      },
+
+      [`.${prefixCls}-prefix`]: {
+        color: colorError,
+      },
+      [`.${prefixCls}-outlined`]: {
+        borderColor: colorError,
+        borderWidth: 2,
+      },
+      [`.${prefixCls}-suffix`]: {
+        color: colorError,
+      },
+    },
+    '&-status-warning:not(&-disabled):not(&-borderless)&': {
+      borderColor: colorWarning,
+      '&, &:hover': {
+        borderColor: colorWarningBorderHover,
+      },
+
+      '&:focus, &-focused': {
+        ...genActiveStyle(
+          mergeToken<InputToken>(token, {
+            inputBorderActiveColor: colorWarning,
+            inputBorderHoverColor: colorWarning,
+            controlOutline: colorWarningOutline,
+          }),
+        ),
+      },
+
+      [`.${prefixCls}-prefix`]: {
+        color: colorWarning,
+      },
+      [`.${prefixCls}-outlined`]: {
+        borderColor: colorWarning,
+        borderWidth: 2,
+      },
+      [`.${prefixCls}-suffix`]: {
+        color: colorWarning,
       },
     },
   }
 }
 
-const genAffixStyle: GenerateStyle<InputToken> = (token: InputToken) => {
+const genAffixStyle = (token: InputToken): CSSObject => {
   const {
     prefixCls,
     inputAffixPadding,
     colorTextDescription,
-    motionDurationSlow,
-    colorIcon,
-    colorIconHover,
-    iconCls,
   } = token
 
   return {
     [`.${prefixCls}-affix-wrapper`]: {
       ...genBasicInputStyle(token),
       display: 'inline-flex',
+      borderRadius: token.radiusBase * 2,
+      padding: `${token.inputPaddingVertical * 2}px ${token.inputPaddingHorizontal}px`,
 
       '&:not(&-disabled):hover': {
         ...genHoverStyle(token),
@@ -632,67 +493,244 @@ const genAffixStyle: GenerateStyle<InputToken> = (token: InputToken) => {
           marginInlineStart: inputAffixPadding,
         },
       },
-
       ...genAllowClearStyle(token),
-
-      // password
-      [`${iconCls}.${prefixCls}-password-icon`]: {
-        color: colorIcon,
-        cursor: 'pointer',
-        transition: `all ${motionDurationSlow}`,
-
-        '&:hover': {
-          color: colorIconHover,
-        },
+      ...genStatusLabelStyle(token),
+      '&::-webkit-input-placeholder': {
+        color: 'transparent',
       },
-
-      // status
-      ...genStatusStyle(token),
+      '&::-moz-input-placeholder': {
+        color: 'transparent',
+      },
+      'input:placeholder': {
+        color: 'transparent',
+      },
     },
   }
 }
 
-const genGroupStyle: GenerateStyle<InputToken> = (token: InputToken) => {
-  const { prefixCls, colorError, colorSuccess, componentCls, controlRadiusLG, controlRadiusSM } =
-    token
+// outlined
+export const genOutlinedStyle = (token: InputToken): CSSObject => {
+  const { componentCls } = token
+  return {
+    [componentCls]: {
+      [`${componentCls}-outlined`]: {
+        textAlign: 'left',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        top: '-5px',
+        left: 0,
+        margin: 0,
+        padding: '0 8px',
+        pointerEvents: 'none',
+        borderRadius: 'inherit',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        overflow: 'hidden',
+        minWidth: '0%',
+        borderColor: 'rgba(0, 0, 0, 0.23)',
+        'legend': {
+          float: 'unset',
+          overflow: 'hidden',
+          display: 'block',
+          width: 'auto',
+          padding: 0,
+          height: '11px',
+          fontSize: '0.75em',
+          visibility: 'hidden',
+          maxWidth: '0.01px',
+          transition: `max-width 50ms cubic-bezier(0.0. 0, 0.2, 1) 0ms;`,
+          whiteSpace: 'nowrap',
+          'span': {
+            paddingLeft: 5,
+            paddingRight: 5,
+            display: 'inline-block',
+            opacity: 0,
+            visibility: 'visible',
+          },
+        },
+      }
+    }
+  }
+}
+
+// input shrink
+export const genShrinkStyle = (token: InputToken): CSSObject => {
+  const { componentCls } = token
+  return {
+    [`${componentCls}-shrink`]: {
+      [`${componentCls}-outlined > legend`]: {
+        maxWidth: '100%',
+      },
+      ...genActiveLabelStyle(token),
+      ...genGroupStyle(token),
+    }
+  }
+}
+
+// text outlined
+export const genTextOutlinedStyle = (token: InputToken): CSSObject => {
+  const { prefixCls, componentCls } = token
+  return {
+    [`${componentCls}-text-outlined`]: {
+      display: 'inline-flex',
+      flexDirection: 'column',
+      position: 'relative',
+      minWidth: 0,
+      padding: 0,
+      margin: 0,
+      border: 0,
+      verticalAlign: 'top',
+      width: '100%',
+      borderRadius: token.radiusBase * 2, // 4
+      [`.${prefixCls}-label`]: {
+        color: token.colorTextSecondary,
+        letterSpacing: '0.00938em',
+        padding: 0,
+        display: 'block',
+        transformOrigin: 'top left',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxWidth: `calc(100% - ${token.controlHeightSM}px)`,
+        position: 'absolute',
+        left: '-3px', // 5 -> 3
+        top: '-6px',
+        transform: 'translate(14px 16px) scale(1)',
+        transition: `
+          color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,
+          transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,
+          max-width 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
+        `,
+        zIndex: token.zIndexBase,
+        pointerEvents: 'none',
+      },
+      ...genOutlinedStyle(token),
+      ...genAffixStyle(token),
+      ...genStatusLabelStyle(token),
+    }
+  }
+}
+
+export const genBasicInputStyle = (token: InputToken): CSSObject => ({
+  position: 'relative',
+  display: 'inline-block',
+  width: '100%',
+  minWidth: 0,
+  // padding: `${token.inputPaddingVertical}px ${token.inputPaddingHorizontal}px`,
+  // 9 11
+  padding: `${token.inputPaddingVertical * 2 + 1}px ${token.inputPaddingHorizontal}px`,
+  color: token.colorText,
+  fontSize: token.fontSize,
+  // lineHeight: token.lineHeight,
+  backgroundColor: token.colorBgContainer,
+  backgroundImage: 'none',
+  borderRadius: token.controlRadius,
+  transition: `all ${token.motionDurationFast}`,
+  border: 'none',
+  outline: 'none',
+  ...genPlaceholderStyle(token.colorTextPlaceholder),
+
+  '&:hover': {
+    ...genHoverStyle(token),
+  },
+
+  '&:focus, &-focused': {
+    ...genActiveStyle(token),
+  },
+
+  '&-disabled, &[disabled]': {
+    ...genDisabledStyle(token),
+  },
+
+  // Reset height for `textarea`s
+  'textarea&': {
+    maxWidth: '100%', // prevent textearea resize from coming out of its container
+    height: 'auto',
+    minHeight: token.controlHeight,
+    lineHeight: token.lineHeight,
+    verticalAlign: 'bottom',
+    transition: `all ${token.motionDurationSlow}, height 0s`,
+  },
+
+  // Size
+  '&-lg': {
+    ...genInputLargeStyle(token),
+  },
+  '&-sm': {
+    ...genInputSmallStyle(token),
+  },
+})
+
+const genInputStyle: GenerateStyle<InputToken> = (token: InputToken) => {
+  const { prefixCls, controlHeightSM, controlLineWidth } = token
+
+  const FIXED_CHROME_COLOR_HEIGHT = 16
+  const colorSmallPadding =
+    (controlHeightSM - controlLineWidth * 2 - FIXED_CHROME_COLOR_HEIGHT) / 2
 
   return {
-    [`.${prefixCls}-group`]: {
-      // Style for input-group: input with label, with button or dropdown...
+    [`.${prefixCls}`]: {
       ...resetComponent(token),
-      ...genInputGroupStyle(token),
+      ...genBasicInputStyle(token),
+      ...genStatusStyle(token),
 
-      '&-wrapper': {
-        display: 'inline-block',
-        width: '100%',
-        textAlign: 'start',
-        verticalAlign: 'top',
+      '&[type="color"]': {
+        height: token.controlHeight,
 
-        // Size
-        '&-lg': {
-          [`${componentCls}-group-addon`]: {
-            borderRadius: controlRadiusLG,
-          },
+        [`&.${prefixCls}-lg`]: {
+          height: token.controlHeightLG,
         },
-        '&-sm': {
-          [`${componentCls}-group-addon`]: {
-            borderRadius: controlRadiusSM,
-          },
+        [`&.${prefixCls}-sm`]: {
+          height: controlHeightSM,
+          paddingTop: colorSmallPadding,
+          paddingBottom: colorSmallPadding,
         },
+      },
+    },
+  }
+}
 
-        // Status
-        '&-status-error': {
-          [`.${prefixCls}-group-addon`]: {
-            color: colorError,
-            borderColor: colorError,
-          },
-        },
-        '&-status-warning': {
-          [`.${prefixCls}-group-addon:last-child`]: {
-            color: colorSuccess,
-            borderColor: colorSuccess,
-          },
-        },
+const genAllowClearStyle = (token: InputToken): CSSObject => {
+  const { prefixCls } = token
+  return {
+    // ========================= Input =========================
+    [`.${prefixCls}-clear-icon`]: {
+      margin: 0,
+      color: token.colorIcon,
+      fontSize: token.fontSizeIcon,
+      verticalAlign: -1,
+      cursor: 'pointer',
+      lineHeight: 0,
+      transition: `color ${token.motionDurationSlow}`,
+
+      '&:hover': {
+        color: token.colorTextDescription,
+      },
+
+      '&:active': {
+        color: token.colorText,
+      },
+
+      '&-hidden': {
+        visibility: 'hidden',
+      },
+
+      '&-has-suffix': {
+        margin: `0 ${token.inputAffixPadding}px`,
+      },
+    },
+
+    // ======================= TextArea ========================
+    '&-textarea-with-clear-btn': {
+      padding: '0 !important',
+      border: '0 !important',
+
+      [`.${prefixCls}-clear-icon`]: {
+        position: 'absolute',
+        insetBlockStart: token.paddingXS,
+        insetInlineEnd: token.paddingXS,
+        zIndex: 1,
       },
     },
   }
@@ -706,11 +744,9 @@ const genSearchInputStyle: GenerateStyle<InputToken> = (token: InputToken) => {
       [`.${prefixCls}`]: {
         '&:hover, &:focus': {
           borderColor: token.colorPrimaryHover,
-
-          [`+ .${prefixCls}-group-addon ${searchPrefixCls}-button:not(.@{ant-prefix}-btn-primary)`]:
-            {
-              borderInlineStartColor: token.colorPrimaryHover,
-            },
+          [`+ .${prefixCls}-group-addon ${searchPrefixCls}-button`]: {
+            borderInlineStartColor: token.colorPrimaryHover,
+          },
         },
       },
 
@@ -718,8 +754,6 @@ const genSearchInputStyle: GenerateStyle<InputToken> = (token: InputToken) => {
         borderRadius: 0,
       },
 
-      // fix slight height diff in Firefox:
-      // https://ant.design/components/auto-complete-cn/#components-auto-complete-demo-certain-category
       [`.${prefixCls}-lg`]: {
         lineHeight: token.lineHeight - 0.0002,
       },
@@ -860,9 +894,13 @@ export default genComponentStyleHook('Input', token => {
 
   return [
     genInputStyle(inputToken),
-    genTextAreaStyle(inputToken),
     genAffixStyle(inputToken),
-    genGroupStyle(inputToken),
     genSearchInputStyle(inputToken),
+    genTextOutlinedStyle(inputToken),
+    genHasLabelStyle(inputToken),
+    genShrinkStyle(inputToken),
+    genFocusedStyle(inputToken),
+    genTextAreaStyle(inputToken),
+    genGroupStyle(inputToken),
   ]
 })
