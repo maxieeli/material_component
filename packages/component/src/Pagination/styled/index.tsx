@@ -41,6 +41,7 @@ const genPaginationDisabledStyle: GenerateStyle<PaginationToken, CSSObject> = to
 
         [`${componentCls}-item-link`]: {
           color: token.colorTextDisabled,
+          borderColor: token.colorBorder,
           cursor: 'not-allowed',
         },
       },
@@ -50,6 +51,7 @@ const genPaginationDisabledStyle: GenerateStyle<PaginationToken, CSSObject> = to
 
         [`${componentCls}-item-link`]: {
           color: token.colorTextDisabled,
+          borderColor: token.colorBorder,
           cursor: 'not-allowed',
         },
       },
@@ -59,6 +61,8 @@ const genPaginationDisabledStyle: GenerateStyle<PaginationToken, CSSObject> = to
       cursor: 'not-allowed',
 
       [`${componentCls}-item`]: {
+        background: token.colorBgContainerDisabled,
+        borderColor: token.colorBorder,
         cursor: 'not-allowed',
 
         '&:hover, &:active': {
@@ -73,13 +77,11 @@ const genPaginationDisabledStyle: GenerateStyle<PaginationToken, CSSObject> = to
         },
 
         '&-active': {
-          borderColor: token.colorBorder,
+          // borderColor: token.colorBorder,
           backgroundColor: token.paginationItemDisabledBgActive,
-
           '&:hover, &:active': {
             backgroundColor: token.paginationItemDisabledBgActive,
           },
-
           a: {
             color: token.paginationItemDisabledColorActive,
           },
@@ -88,6 +90,8 @@ const genPaginationDisabledStyle: GenerateStyle<PaginationToken, CSSObject> = to
 
       [`${componentCls}-item-link`]: {
         color: token.colorTextDisabled,
+        background: token.colorBgContainerDisabled,
+        borderColor: token.colorBorder,
         cursor: 'not-allowed',
 
         '&:hover, &:active': {
@@ -343,6 +347,10 @@ const genPaginationJumpStyle: GenerateStyle<PaginationToken, CSSObject> = token 
         cursor: 'pointer',
         userSelect: 'none',
       },
+      
+      '&:hover button': {
+        borderColor: token.colorPrimaryHover,
+      },
 
       [`${componentCls}-item-link`]: {
         display: 'block',
@@ -353,7 +361,9 @@ const genPaginationJumpStyle: GenerateStyle<PaginationToken, CSSObject> = token 
         textAlign: 'center',
         backgroundColor: 'transparent',
         border: `${token.controlLineWidth}px ${token.controlLineType} transparent`,
-        borderRadius: token.radiusBase,
+        // borderRadius: token.radiusBase,
+        borderRadius: '50%',
+        lineHeight: 0,
         outline: 'none',
         transition: `border ${token.motionDurationFast}`,
       },
@@ -364,10 +374,12 @@ const genPaginationJumpStyle: GenerateStyle<PaginationToken, CSSObject> = token 
 
       [`&:hover ${componentCls}-item-link`]: {
         backgroundColor: token.colorBgTextHover,
+        color: token.colorBgTextHover,
       },
 
       [`&:active ${componentCls}-item-link`]: {
         backgroundColor: token.colorBgTextActive,
+        color: token.colorBgTextActive,
       },
 
       [`&${componentCls}-disabled:hover`]: {
@@ -401,7 +413,12 @@ const genPaginationJumpStyle: GenerateStyle<PaginationToken, CSSObject> = token 
 
         input: {
           ...genBasicInputStyle(token),
-
+          boxSizing: 'content-box',
+          padding: `${token.paddingXXS - 1}px ${token.paddingSM - 1}px`,
+          borderWidth: token.controlLineWidth,
+          borderStyle: token.controlLineType,
+          borderColor: token.colorTextQuaternary,
+          borderRadius: token.radiusBase * 2,
           width: token.controlHeightLG * 1.25,
           height: token.controlHeight,
           margin: 0,
@@ -427,9 +444,11 @@ const genPaginationItemStyle: GenerateStyle<PaginationToken, CSSObject> = token 
       textAlign: 'center',
       verticalAlign: 'middle',
       listStyle: 'none',
-      backgroundColor: 'transparent',
+      // backgroundColor: 'transparent',
+      backgroundColor: token.paginationItemBg,
       border: `${token.controlLineWidth}px ${token.controlLineType} transparent`,
-      borderRadius: token.radiusBase,
+      // borderRadius: token.radiusBase,
+      borderRadius: '50%',
       outline: 0,
       cursor: 'pointer',
       userSelect: 'none',
@@ -439,9 +458,24 @@ const genPaginationItemStyle: GenerateStyle<PaginationToken, CSSObject> = token 
         padding: `0 ${token.paginationItemPaddingInline}px`,
         color: token.colorText,
         transition: 'none',
-
         '&:hover': {
           textDecoration: 'none',
+        },
+      },
+
+      '&:hover': {
+        borderColor: token.colorPrimary,
+        transition: `all ${token.motionDurationSlow}`,
+        a: {
+          color: token.colorPrimary,
+        },
+      },
+
+      '&:focus-visible': {
+        borderColor: token.colorPrimary,
+        transition: `all ${token.motionDurationSlow}`,
+        a: {
+          color: token.colorPrimary,
         },
       },
 
@@ -541,103 +575,7 @@ const genPaginationStyle: GenerateStyle<PaginationToken, CSSObject> = token => {
   }
 }
 
-const genBorderedStyle: GenerateStyle<PaginationToken> = token => {
-  const { componentCls } = token
-
-  return {
-    [`${componentCls}${componentCls}-disabled`]: {
-      '&, &:hover': {
-        [`${componentCls}-item-link`]: {
-          borderColor: token.colorBorder,
-        },
-      },
-
-      '&:focus-visible': {
-        [`${componentCls}-item-link`]: {
-          borderColor: token.colorBorder,
-        },
-      },
-
-      [`${componentCls}-item, ${componentCls}-item-link`]: {
-        backgroundColor: token.colorBgContainerDisabled,
-        borderColor: token.colorBorder,
-
-        [`&:hover:not(${componentCls}-item-active)`]: {
-          backgroundColor: token.colorBgContainerDisabled,
-          borderColor: token.colorBorder,
-
-          a: {
-            color: token.colorTextDisabled,
-          },
-        },
-
-        [`&${componentCls}-item-active`]: {
-          backgroundColor: token.paginationItemDisabledBgActive,
-        },
-      },
-
-      [`${componentCls}-prev, ${componentCls}-next`]: {
-        '&:hover button': {
-          backgroundColor: token.colorBgContainerDisabled,
-          borderColor: token.colorBorder,
-          color: token.colorTextDisabled,
-        },
-
-        [`${componentCls}-item-link`]: {
-          backgroundColor: token.colorBgContainerDisabled,
-          borderColor: token.colorBorder,
-        },
-      },
-    },
-
-    [componentCls]: {
-      [`${componentCls}-prev, ${componentCls}-next`]: {
-        '&:hover button': {
-          borderColor: token.colorPrimaryHover,
-          backgroundColor: token.paginationItemBg,
-        },
-
-        [`${componentCls}-item-link`]: {
-          backgroundColor: token.paginationItemLinkBg,
-          borderColor: token.colorBorder,
-        },
-
-        [`&:hover ${componentCls}-item-link`]: {
-          borderColor: token.colorPrimary,
-          backgroundColor: token.paginationItemBg,
-          color: token.colorPrimary,
-        },
-
-        [`&${componentCls}-disabled`]: {
-          [`${componentCls}-item-link`]: {
-            borderColor: token.colorBorder,
-            color: token.colorTextDisabled,
-          },
-        },
-      },
-
-      [`${componentCls}-item`]: {
-        backgroundColor: token.paginationItemBg,
-        border: `${token.controlLineWidth}px ${token.controlLineType} ${token.colorBorder}`,
-
-        [`&:hover:not(${componentCls}-item-active)`]: {
-          borderColor: token.colorPrimary,
-          backgroundColor: token.paginationItemBg,
-
-          a: {
-            color: token.colorPrimary,
-          },
-        },
-
-        '&-active': {
-          borderColor: token.colorPrimary,
-        },
-      },
-    },
-  }
-}
-
-// ============================== Export ==============================
+// Export
 export default genComponentStyleHook('Pagination', token => {
   const paginationToken = mergeToken<PaginationToken>(
     token,
@@ -666,6 +604,5 @@ export default genComponentStyleHook('Pagination', token => {
   )
   return [
     genPaginationStyle(paginationToken),
-    token.wireframe && genBorderedStyle(paginationToken),
   ]
 })
