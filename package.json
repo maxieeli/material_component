@@ -6,7 +6,8 @@
     "packages/*"
   ],
   "scripts": {
-    "remove:node": "cross-env && node ./scripts/remove_module"
+    "remove:node": "cross-env && node ./scripts/remove_module",
+    "multiple:build": "cross-env && node ./scripts/multiple_build"
   },
   "devDependencies": {
     "@babel/core": "^7.19.1",
