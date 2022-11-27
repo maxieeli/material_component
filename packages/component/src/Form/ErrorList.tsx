@@ -53,9 +53,7 @@ export default function ErrorList({
 
   const baseClassName = `${prefixCls}-item-explain`
   const rootPrefixCls = getPrefixCls()
-
   const collapseMotion = useMemo(() => initCollapseMotion(rootPrefixCls), [rootPrefixCls])
-
   const debounceErrors = useDebounce(errors)
   const debounceWarnings = useDebounce(warnings)
 
@@ -86,7 +84,7 @@ export default function ErrorList({
       visible={!!fullKeyList.length}
       onVisibleChanged={onVisibleChanged}
     >
-      {holderProps => {
+      {(holderProps) => {
         const { className: holderClassName, style: holderStyle } = holderProps
 
         return (
@@ -102,7 +100,7 @@ export default function ErrorList({
               motionName={`${rootPrefixCls}-show-help-item`}
               component={false}
             >
-              {itemProps => {
+              {(itemProps) => {
                 const {
                   key,
                   error,

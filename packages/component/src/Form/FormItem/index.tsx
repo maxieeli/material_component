@@ -18,7 +18,6 @@ import useFrameState from '../hooks/useFrameState'
 import useItemRef from '../hooks/useItemRef'
 import { getFieldId, toArray } from '../util'
 import ItemHolder from './ItemHolder'
-
 import useStyle from '../styled'
 
 const NAME_SPLIT = '__SPLIT__'
@@ -73,6 +72,7 @@ export interface FormItemProps<Values = any>
 }
 
 function hasValidName(name?: NamePath): Boolean {
+  if (name === null) {}
   return !(name === undefined || name === null)
 }
 
@@ -161,7 +161,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
   // >>>>> Collect noStyle Field error to the top FormItem
   const onSubItemMetaChange = (subMeta: Meta & { destroy: boolean }, uniqueKeys: React.Key[]) => {
     // Only `noStyle` sub item will trigger
-    setSubFieldErrors(prevSubFieldErrors => {
+    setSubFieldErrors((prevSubFieldErrors) => {
       const clone = {
         ...prevSubFieldErrors,
       }
@@ -187,7 +187,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
     const errorList: string[] = [...meta.errors]
     const warningList: string[] = [...meta.warnings]
 
-    Object.values(subFieldErrors).forEach(subFieldError => {
+    Object.values(subFieldErrors).forEach((subFieldError) => {
       errorList.push(...(subFieldError.errors || []))
       warningList.push(...(subFieldError.warnings || []))
     })
@@ -210,7 +210,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
 
     return (
       <ItemHolder
-        key="row"
+        key='row'
         {...props}
         className={classNames(className, hashId)}
         prefixCls={prefixCls}
@@ -219,6 +219,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
         errors={mergedErrors}
         warnings={mergedWarnings}
         meta={meta}
+        // @ts-ignore
         onSubItemMetaChange={onSubItemMetaChange}
       >
         {baseChildren}
@@ -258,7 +259,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
             ? required
             : !!(
                 rules &&
-                rules.some(rule => {
+                rules.some((rule) => {
                   if (rule && typeof rule === 'object' && rule.required && !rule.warningOnly) {
                     return true
                   }
@@ -315,7 +316,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
             ...toArray(mergedValidateTrigger),
           ])
 
-          triggers.forEach(eventName => {
+          triggers.forEach((eventName) => {
             childProps[eventName] = (...args: any[]) => {
               mergedControl[eventName]?.(...args)
               children.props[eventName]?.(...args)
@@ -339,7 +340,7 @@ function InternalFormItem<Values = any>(props: FormItemProps<Values>): React.Rea
             </MemoInput>
           )
         } else if (isRenderProps && (shouldUpdate || dependencies) && !hasName) {
-          childNode = (children as RenderChildren)(context)
+          childNode = children(context)
         } else {
           childNode = children as React.ReactNode
         }

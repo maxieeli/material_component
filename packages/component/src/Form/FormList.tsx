@@ -50,7 +50,7 @@ const FormList: React.FC<FormListProps> = ({
       {(fields, operation, meta) => (
         <FormItemPrefixContext.Provider value={contextValue}>
           {children(
-            fields.map(field => ({ ...field, fieldKey: field.key })),
+            fields.map((field) => ({ ...field, fieldKey: field.key })),
             operation,
             {
               errors: meta.errors,

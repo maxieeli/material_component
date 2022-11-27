@@ -11,4 +11,6 @@ const useFormItemStatus: UseFormItemStatus = () => {
   return { status }
 }
 
+(useFormItemStatus as any).Context = FormItemInputContext
+
 export default useFormItemStatus

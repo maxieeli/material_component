@@ -13,7 +13,6 @@ import type { FormContextProps } from './context'
 import { FormContext } from './context'
 import useForm, { FormInstance } from './hooks/useForm'
 import type { FormLabelAlign } from './interface'
-
 import useStyle from './styled'
 
 export type RequiredMark = boolean | 'optional'
@@ -153,6 +152,6 @@ const Form = React.forwardRef<FormInstance, FormProps>(InternalForm) as <Values 
   props: React.PropsWithChildren<FormProps<Values>> & { ref?: React.Ref<FormInstance<Values>> },
 ) => React.ReactElement
 
-export { useForm, List, FormInstance, useWatch }
+export { useForm, List, type FormInstance, useWatch }
 
 export default Form

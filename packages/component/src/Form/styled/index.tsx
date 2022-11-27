@@ -18,7 +18,6 @@ const resetForm = (token: AliasToken): CSSObject => ({
     boxSizing: 'border-box',
   },
 
-  // Position radios and checkboxes better
   'input[type="radio"], input[type="checkbox"]': {
     lineHeight: 'normal',
   },
@@ -27,18 +26,15 @@ const resetForm = (token: AliasToken): CSSObject => ({
     display: 'block',
   },
 
-  // Make range inputs behave like textual form controls
   'input[type="range"]': {
     display: 'block',
     width: '100%',
   },
 
-  // Make multiple select elements height not fixed
   'select[multiple], select[size]': {
     height: 'auto',
   },
 
-  // Focus for file, radio, and checkbox
   [`input[type='file']:focus,
   input[type='radio']:focus,
   input[type='checkbox']:focus`]: {
@@ -92,7 +88,7 @@ const genFormStyle: GenerateStyle<FormToken> = token => {
 }
 
 const genFormItemStyle: GenerateStyle<FormToken> = token => {
-  const { formItemCls, componentCls, rootPrefixCls } = token
+  const { formItemCls, iconCls, componentCls, rootPrefixCls } = token
 
   return {
     [formItemCls]: {
