@@ -1,11 +1,7 @@
-import { getArrowOffset } from '../../style/placementArrow'
 import {
-  initMoveMotion,
-  initSlideMotion,
-  slideDownIn,
-  slideDownOut,
-  slideUpIn,
-  slideUpOut,
+  initMoveMotion, initSlideMotion,
+  slideDownIn, slideDownOut,
+  slideUpIn, slideUpOut,
 } from '../../style/motion'
 import type { FullToken, GenerateStyle } from '../../theme'
 import { genComponentStyleHook, mergeToken } from '../../theme'
@@ -38,11 +34,10 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
     muiCls,
     iconCls,
     motionDurationMid,
-    motionDurationFast,
     dropdownPaddingVertical,
-    fontSizeBase,
+    fontSize,
     dropdownEdgeChildPadding,
-    radiusBase,
+    borderRadius,
     colorTextDisabled,
     fontSizeIcon,
     controlPaddingHorizontal,
@@ -63,9 +58,9 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         },
         zIndex: zIndexPopup,
         display: 'block',
-        borderRadius: token.radiusBase * 2,
+        borderRadius: token.borderRadiusSM, // 4
         outline: 0,
-        boxShadow: token.boxShadow,
+        // boxShadow: token.boxShadow,
         transition: 'box-shadow .3s cubic-bezier(.4, 0, .2, 1) 0ms',
         '&::before': {
           position: 'absolute',
@@ -81,6 +76,9 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           [`${muiCls}-btn > svg`]: {
             fontSize: fontSizeIcon,
           },
+          [`${iconCls}-down::before`]: {
+            transition: `transform ${motionDurationMid}`,
+          }
         },
 
         [`${componentCls}-wrap-open`]: {
@@ -123,8 +121,8 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
 
           ...roundedArrow(
             sizePopupArrow,
-            token.radiusXS,
-            token.radiusOuter,
+            token.borderRadiusXS,
+            token.borderRadiusOuter,
             colorBgElevated,
             boxShadowPopoverArrow,
           ),
@@ -135,7 +133,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         &-placement-topLeft > ${componentCls}-arrow,
         &-placement-topRight > ${componentCls}-arrow
       `]: {
-          bottom: dropdownArrowDistance,
+          bottom: sizePopupArrow + Math.sqrt(1 / 2) + 2,
           boxShadow: token.boxShadowPopoverArrow,
           transform: 'rotate(45deg)',
         },
@@ -167,7 +165,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           &-placement-bottomLeft > ${componentCls}-arrow,
           &-placement-bottomRight > ${componentCls}-arrow
         `]: {
-          top: dropdownArrowDistance,
+          top: (sizePopupArrow + 2) * Math.sqrt(1 / 2),
           transform: `rotate(-135deg) translateY(-0.5px)`,
         },
 
@@ -232,7 +230,8 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
         position: 'relative',
         margin: 0,
       },
-
+    },
+    {
       [`${menuCls}-submenu-popup`]: {
         position: 'absolute',
         zIndex: zIndexPopup,
@@ -253,7 +252,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           listStyleType: 'none',
           backgroundColor: colorBgElevated,
           backgroundClip: 'padding-box',
-          borderRadius: token.controlRadius,
+          borderRadius: token.borderRadius,
           outline: 'none',
           boxShadow: token.boxShadow,
           ...genFocusStyle(token),
@@ -261,7 +260,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           [`${menuCls}-item-group-title`]: {
             padding: `${dropdownPaddingVertical}px ${controlPaddingHorizontal}px`,
             color: token.colorTextDescription,
-            transition: `all ${motionDurationFast}`,
+            transition: `all ${token.motionDurationSlow}`,
           },
 
           // ======================= Item Content =======================
@@ -272,7 +271,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
           },
 
           [`${menuCls}-item-icon`]: {
-            minWidth: fontSizeBase,
+            minWidth: fontSize,
             marginInlineEnd: token.marginXS,
             fontSize: token.fontSizeSM,
           },
@@ -281,7 +280,7 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             flex: 'auto',
             '> a': {
               color: 'inherit',
-              transition: `all ${motionDurationFast}`,
+              transition: `all ${token.motionDurationSlow}`,
               '&:hover': {
                 color: 'inherit',
               },
@@ -300,17 +299,17 @@ const genBaseStyle: GenerateStyle<DropdownToken> = token => {
             padding: `${dropdownPaddingVertical}px ${controlPaddingHorizontal}px`,
             color: token.colorText,
             fontWeight: 'normal',
-            fontSize: fontSizeBase,
+            fontSize: fontSize,
             lineHeight: token.lineHeight,
             cursor: 'pointer',
-            transition: `all ${motionDurationFast}`,
+            transition: `all ${token.motionDurationSlow}`,
 
             '&:first-child': !dropdownEdgeChildPadding
-              ? { borderRadius: `${radiusBase}px ${radiusBase}px 0 0` }
+              ? { borderRadius: `${token.borderRadiusXS}px ${token.borderRadiusXS}px 0 0` }
               : [],
 
             '&:last-child': !dropdownEdgeChildPadding
-              ? { borderRadius: `0 0 ${radiusBase}px ${radiusBase}px` }
+              ? { borderRadius: `0 0 ${token.borderRadiusXS}px ${token.borderRadiusXS}px` }
               : [],
 
             [`&:hover, &-active`]: {
@@ -407,26 +406,19 @@ export default genComponentStyleHook(
       marginXXS,
       sizePopupArrow,
       controlHeight,
-      fontSizeBase,
       lineHeight,
       paddingXXS,
       componentCls,
-      radiusOuter,
-      radiusLG,
+      fontSize,
     } = token
 
-    const dropdownPaddingVertical = (controlHeight - fontSizeBase * lineHeight) / 2
-    const { dropdownArrowOffset } = getArrowOffset({
-      sizePopupArrow,
-      contentRadius: radiusLG,
-      radiusOuter,
-    })
+    const dropdownPaddingVertical = (controlHeight - fontSize * lineHeight) / 2
 
     const dropdownToken = mergeToken<DropdownToken>(token, {
       menuCls: `${componentCls}-menu`,
       rootPrefixCls,
       dropdownArrowDistance: sizePopupArrow + marginXXS,
-      dropdownArrowOffset,
+      dropdownArrowOffset: (sizePopupArrow / Math.sqrt(2)) * 2,
       dropdownPaddingVertical,
       dropdownEdgeChildPadding: paddingXXS,
     })

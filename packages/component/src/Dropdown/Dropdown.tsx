@@ -5,7 +5,9 @@ import BasicDropdown from '@developerli/basic-dropdown'
 import useEvent from 'rc-util/lib/hooks/useEvent'
 import useMergedState from 'rc-util/lib/hooks/useMergedState'
 import { ConfigContext } from '../Provider'
+import Menu from '../Menu'
 import { OverrideProvider } from '../Menu/OverrideContext'
+import type { MenuProps } from '../Menu/Menu'
 import genPurePanel from '../utils/PurePanel'
 import getPlacements from '../utils/placement'
 import { cloneElement } from '../utils/reactNode'
@@ -46,10 +48,11 @@ export type DropdownArrowOptions = {
 }
 
 export interface DropdownProps {
+  menu?: MenuProps
   autoFocus?: boolean
   arrow?: boolean | DropdownArrowOptions
   trigger?: ('click' | 'hover' | 'contextMenu')[]
-  overlay: React.ReactElement | OverlayFunc
+  dropdownRender?: (originNode: React.ReactNode) => React.ReactNode
   onOpenChange?: (open: boolean) => void
   open?: boolean
   disabled?: boolean
@@ -67,6 +70,8 @@ export interface DropdownProps {
   mouseLeaveDelay?: number
   openClassName?: string
   children?: React.ReactNode
+  /** @deprecated Please use `menu` instead */
+  overlay?: React.ReactElement | OverlayFunc
 }
 
 interface DropdownInterface extends React.FC<DropdownProps> {
@@ -107,11 +112,13 @@ const Dropdown: DropdownInterface = props => {
   }
 
   const {
+    menu,
     arrow,
     prefixCls: customizePrefixCls,
     children,
     trigger,
     disabled,
+    dropdownRender,
     getPopupContainer,
     overlayClassName,
     open,
@@ -165,10 +172,15 @@ const Dropdown: DropdownInterface = props => {
     const { overlay } = props
 
     let overlayNode: React.ReactNode
-    if (typeof overlay === 'function') {
+    if (menu?.items) {
+      overlayNode = <Menu {...menu} />
+    } else if (typeof overlay === 'function') {
       overlayNode = overlay()
     } else {
       overlayNode = overlay
+    }
+    if (dropdownRender) {
+      overlayNode = dropdownRender(overlayNode)
     }
     overlayNode = React.Children.only(
       typeof overlayNode === 'string' ? <span>{overlayNode}</span> : overlayNode,
@@ -217,7 +229,6 @@ const Dropdown: DropdownInterface = props => {
 
 Dropdown.Button = DropdownButton
 
-// We don't care debug panel
 const PurePanel = genPurePanel(Dropdown, 'dropdown', prefixCls => prefixCls)
 
 /* istanbul ignore next */

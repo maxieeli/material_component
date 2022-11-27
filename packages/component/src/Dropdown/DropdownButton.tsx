@@ -8,9 +8,9 @@ import type { ButtonGroupProps } from '../Button/ButtonGroup'
 import { ConfigContext } from '../Provider'
 import type { DropdownProps } from './Dropdown'
 import Dropdown from './Dropdown'
+import Gap from '../Gap'
+import { useCompactItemContext } from '../Gap/Compact'
 import useStyle from './styled'
-
-const ButtonGroup = Button.Group
 
 export type DropdownButtonType = 'default' | 'primary' | 'ghost' | 'dashed' | 'link' | 'text'
 
@@ -30,7 +30,7 @@ export interface DropdownButtonProps extends ButtonGroupProps, DropdownProps {
 
 interface DropdownButtonInterface extends React.FC<DropdownButtonProps> {}
 
-const DropdownButton: DropdownButtonInterface = props => {
+const DropdownButton: DropdownButtonInterface = (props) => {
   const {
     getPopupContainer: getContextPopupContainer,
     getPrefixCls,
@@ -46,7 +46,9 @@ const DropdownButton: DropdownButtonInterface = props => {
     htmlType,
     children,
     className,
-    overlay,
+    menu,
+    arrow,
+    autoFocus,
     trigger,
     align,
     open,
@@ -70,8 +72,10 @@ const DropdownButton: DropdownButtonInterface = props => {
   const [wrapSSR, hashId] = useStyle(prefixCls)
 
   const dropdownProps: DropdownProps = {
+    menu,
+    arrow,
+    autoFocus,
     align,
-    overlay,
     disabled,
     trigger: disabled ? [] : trigger,
     onOpenChange,
@@ -82,6 +86,10 @@ const DropdownButton: DropdownButtonInterface = props => {
     overlayStyle,
     destroyPopupOnHide,
   }
+
+  const { compactSize, compactItemClassnames } = useCompactItemContext(prefixCls)
+
+  const classes = classNames(buttonPrefixCls, compactItemClassnames, className, hashId)
 
   if ('open' in props) {
     dropdownProps.open = open
@@ -113,10 +121,10 @@ const DropdownButton: DropdownButtonInterface = props => {
   const [leftButtonToRender, rightButtonToRender] = buttonsRender([leftButton, rightButton])
 
   return wrapSSR(
-    <ButtonGroup {...restProps} className={classNames(buttonPrefixCls, className, hashId)}>
+    <Gap.Compact className={classes} size={compactSize} block {...restProps}>
       {leftButtonToRender}
       <Dropdown {...dropdownProps}>{rightButtonToRender}</Dropdown>
-    </ButtonGroup>,
+    </Gap.Compact>,
   )
 }
 
