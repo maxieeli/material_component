@@ -1,10 +1,10 @@
-import type { CSSInterpolation } from '@developerli/styled';
-import { Keyframes } from '@developerli/styled';
-import type { AliasToken } from '../../theme';
-import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook';
-import { initMotion } from './motion';
+import type { CSSInterpolation } from '@developerli/styled'
+import { Keyframes } from '@developerli/styled'
+import type { AliasToken } from '../../theme'
+import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook'
+import { initMotion } from './motion'
 
-export const moveDownIn = new Keyframes('antMoveDownIn', {
+export const moveDownIn = new Keyframes('muiMoveDownIn', {
   '0%': {
     transform: 'translate3d(0, 100%, 0)',
     transformOrigin: '0 0',
@@ -16,9 +16,9 @@ export const moveDownIn = new Keyframes('antMoveDownIn', {
     transformOrigin: '0 0',
     opacity: 1,
   },
-});
+})
 
-export const moveDownOut = new Keyframes('antMoveDownOut', {
+export const moveDownOut = new Keyframes('muiMoveDownOut', {
   '0%': {
     transform: 'translate3d(0, 0, 0)',
     transformOrigin: '0 0',
@@ -30,9 +30,9 @@ export const moveDownOut = new Keyframes('antMoveDownOut', {
     transformOrigin: '0 0',
     opacity: 0,
   },
-});
+})
 
-export const moveLeftIn = new Keyframes('antMoveLeftIn', {
+export const moveLeftIn = new Keyframes('muiMoveLeftIn', {
   '0%': {
     transform: 'translate3d(-100%, 0, 0)',
     transformOrigin: '0 0',
@@ -44,9 +44,9 @@ export const moveLeftIn = new Keyframes('antMoveLeftIn', {
     transformOrigin: '0 0',
     opacity: 1,
   },
-});
+})
 
-export const moveLeftOut = new Keyframes('antMoveLeftOut', {
+export const moveLeftOut = new Keyframes('muiMoveLeftOut', {
   '0%': {
     transform: 'translate3d(0, 0, 0)',
     transformOrigin: '0 0',
@@ -58,9 +58,9 @@ export const moveLeftOut = new Keyframes('antMoveLeftOut', {
     transformOrigin: '0 0',
     opacity: 0,
   },
-});
+})
 
-export const moveRightIn = new Keyframes('antMoveRightIn', {
+export const moveRightIn = new Keyframes('muiMoveRightIn', {
   '0%': {
     transform: 'translate3d(100%, 0, 0)',
     transformOrigin: '0 0',
@@ -72,9 +72,9 @@ export const moveRightIn = new Keyframes('antMoveRightIn', {
     transformOrigin: '0 0',
     opacity: 1,
   },
-});
+})
 
-export const moveRightOut = new Keyframes('antMoveRightOut', {
+export const moveRightOut = new Keyframes('muiMoveRightOut', {
   '0%': {
     transform: 'translate3d(0, 0, 0)',
     transformOrigin: '0 0',
@@ -86,9 +86,9 @@ export const moveRightOut = new Keyframes('antMoveRightOut', {
     transformOrigin: '0 0',
     opacity: 0,
   },
-});
+})
 
-export const moveUpIn = new Keyframes('antMoveUpIn', {
+export const moveUpIn = new Keyframes('muiMoveUpIn', {
   '0%': {
     transform: 'translate3d(0, -100%, 0)',
     transformOrigin: '0 0',
@@ -100,9 +100,9 @@ export const moveUpIn = new Keyframes('antMoveUpIn', {
     transformOrigin: '0 0',
     opacity: 1,
   },
-});
+})
 
-export const moveUpOut = new Keyframes('antMoveUpOut', {
+export const moveUpOut = new Keyframes('muiMoveUpOut', {
   '0%': {
     transform: 'translate3d(0, 0, 0)',
     transformOrigin: '0 0',
@@ -114,9 +114,9 @@ export const moveUpOut = new Keyframes('antMoveUpOut', {
     transformOrigin: '0 0',
     opacity: 0,
   },
-});
+})
 
-type MoveMotionTypes = 'move-up' | 'move-down' | 'move-left' | 'move-right';
+type MoveMotionTypes = 'move-up' | 'move-down' | 'move-left' | 'move-right'
 const moveMotion: Record<MoveMotionTypes, { inKeyframes: Keyframes; outKeyframes: Keyframes }> = {
   'move-up': {
     inKeyframes: moveUpIn,
@@ -134,15 +134,15 @@ const moveMotion: Record<MoveMotionTypes, { inKeyframes: Keyframes; outKeyframes
     inKeyframes: moveRightIn,
     outKeyframes: moveRightOut,
   },
-};
+}
 
 export const initMoveMotion = (
   token: TokenWithCommonCls<AliasToken>,
   motionName: MoveMotionTypes,
 ): CSSInterpolation => {
-  const { muiCls } = token;
-  const motionCls = `${muiCls}-${motionName}`;
-  const { inKeyframes, outKeyframes } = moveMotion[motionName];
+  const { muiCls } = token
+  const motionCls = `${muiCls}-${motionName}`
+  const { inKeyframes, outKeyframes } = moveMotion[motionName]
 
   return [
     initMotion(motionCls, inKeyframes, outKeyframes, token.motionDurationMid),
@@ -159,5 +159,5 @@ export const initMoveMotion = (
         animationTimingFunction: token.motionEaseInOutCirc,
       },
     },
-  ];
-};
+  ]
+}

@@ -1,5 +1,5 @@
-import type { CSSObject } from '@developerli/styled';
-import type { DerivativeToken } from '../theme';
+import type { CSSObject } from '@developerli/styled'
+import type { DerivativeToken } from '../theme'
 
 export const operationUnit = (token: DerivativeToken): CSSObject => ({
   color: token.colorLink,
@@ -15,4 +15,4 @@ export const operationUnit = (token: DerivativeToken): CSSObject => ({
   '&:active': {
     color: token.colorLinkActive,
   },
-});
+})

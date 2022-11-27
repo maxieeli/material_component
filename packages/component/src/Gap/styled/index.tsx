@@ -3,9 +3,9 @@ import { genComponentStyleHook } from '../../theme'
 
 export interface ComponentToken {}
 
-interface SpaceToken extends FullToken<'Space'> {}
+interface GapToken extends FullToken<'Gap'> {}
 
-const genSpaceStyle: GenerateStyle<SpaceToken> = token => {
+const genGapStyle: GenerateStyle<GapToken> = token => {
   const { componentCls } = token
 
   return {
@@ -39,4 +39,4 @@ const genSpaceStyle: GenerateStyle<SpaceToken> = token => {
 }
 
 // ============================== Export ==============================
-export default genComponentStyleHook('Space', token => [genSpaceStyle(token)])
+export default genComponentStyleHook('Gap', token => [genGapStyle(token)])

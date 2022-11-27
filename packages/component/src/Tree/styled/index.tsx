@@ -7,7 +7,7 @@ import { genComponentStyleHook, mergeToken } from '../../theme'
 import { genFocusOutline, resetComponent } from '../../style'
 
 // ============================ Keyframes =============================
-const treeNodeFX = new Keyframes('ant-tree-node-fx-do-not-use', {
+const treeNodeFX = new Keyframes('mui-tree-node-fx-do-not-use', {
   '0%': {
     opacity: 0,
   },

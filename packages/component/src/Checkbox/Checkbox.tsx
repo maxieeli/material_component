@@ -1,49 +1,49 @@
-import * as React from 'react';
-import { useContext } from 'react';
-import classNames from 'classnames';
-import BasicCheckbox from '@developerli/basic-checkbox';
-import { ConfigContext } from '../Provider';
-import { FormItemInputContext } from '../Form/context';
-import { GroupContext } from './Group';
-import DisabledContext from '../Provider/DisabledContext';
-import useStyle from './styled';
+import * as React from 'react'
+import { useContext } from 'react'
+import classNames from 'classnames'
+import BasicCheckbox from '@developerli/basic-checkbox'
+import { ConfigContext } from '../Provider'
+import { FormItemInputContext } from '../Form/context'
+import { GroupContext } from './Group'
+import DisabledContext from '../Provider/DisabledContext'
+import useStyle from './styled'
 
 export interface AbstractCheckboxProps<T> {
-  prefixCls?: string;
-  className?: string;
-  defaultChecked?: boolean;
-  checked?: boolean;
-  style?: React.CSSProperties;
-  disabled?: boolean;
-  onChange?: (e: T) => void;
-  onClick?: React.MouseEventHandler<HTMLElement>;
-  onMouseEnter?: React.MouseEventHandler<HTMLElement>;
-  onMouseLeave?: React.MouseEventHandler<HTMLElement>;
-  onKeyPress?: React.KeyboardEventHandler<HTMLElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
-  value?: any;
-  tabIndex?: number;
-  name?: string;
-  children?: React.ReactNode;
-  id?: string;
-  autoFocus?: boolean;
-  type?: string;
-  skipGroup?: boolean;
+  prefixCls?: string
+  className?: string
+  defaultChecked?: boolean
+  checked?: boolean
+  style?: React.CSSProperties
+  disabled?: boolean
+  onChange?: (e: T) => void
+  onClick?: React.MouseEventHandler<HTMLElement>
+  onMouseEnter?: React.MouseEventHandler<HTMLElement>
+  onMouseLeave?: React.MouseEventHandler<HTMLElement>
+  onKeyPress?: React.KeyboardEventHandler<HTMLElement>
+  onKeyDown?: React.KeyboardEventHandler<HTMLElement>
+  value?: any
+  tabIndex?: number
+  name?: string
+  children?: React.ReactNode
+  id?: string
+  autoFocus?: boolean
+  type?: string
+  skipGroup?: boolean
 }
 
 export interface CheckboxChangeEventTarget extends CheckboxProps {
-  checked: boolean;
+  checked: boolean
 }
 
 export interface CheckboxChangeEvent {
-  target: CheckboxChangeEventTarget;
-  stopPropagation: () => void;
-  preventDefault: () => void;
-  nativeEvent: MouseEvent;
+  target: CheckboxChangeEventTarget
+  stopPropagation: () => void
+  preventDefault: () => void
+  nativeEvent: MouseEvent
 }
 
 export interface CheckboxProps extends AbstractCheckboxProps<CheckboxChangeEvent> {
-  indeterminate?: boolean;
+  indeterminate?: boolean
 }
 
 const InternalCheckbox: React.ForwardRefRenderFunction<HTMLInputElement, CheckboxProps> = (
@@ -61,45 +61,45 @@ const InternalCheckbox: React.ForwardRefRenderFunction<HTMLInputElement, Checkbo
   },
   ref,
 ) => {
-  const { getPrefixCls } = React.useContext(ConfigContext);
-  const checkboxGroup = React.useContext(GroupContext);
-  const { isFormItemInput } = useContext(FormItemInputContext);
-  const contextDisabled = useContext(DisabledContext);
-  const mergedDisabled = (checkboxGroup?.disabled || disabled) ?? contextDisabled;
+  const { getPrefixCls } = React.useContext(ConfigContext)
+  const checkboxGroup = React.useContext(GroupContext)
+  const { isFormItemInput } = useContext(FormItemInputContext)
+  const contextDisabled = useContext(DisabledContext)
+  const mergedDisabled = (checkboxGroup?.disabled || disabled) ?? contextDisabled
 
-  const prevValue = React.useRef(restProps.value);
+  const prevValue = React.useRef(restProps.value)
 
   React.useEffect(() => {
-    checkboxGroup?.registerValue(restProps.value);
-  }, []);
+    checkboxGroup?.registerValue(restProps.value)
+  }, [])
 
   React.useEffect(() => {
     if (skipGroup) {
-      return;
+      return
     }
     if (restProps.value !== prevValue.current) {
-      checkboxGroup?.cancelValue(prevValue.current);
-      checkboxGroup?.registerValue(restProps.value);
-      prevValue.current = restProps.value;
+      checkboxGroup?.cancelValue(prevValue.current)
+      checkboxGroup?.registerValue(restProps.value)
+      prevValue.current = restProps.value
     }
-    return () => checkboxGroup?.cancelValue(restProps.value);
-  }, [restProps.value]);
+    return () => checkboxGroup?.cancelValue(restProps.value)
+  }, [restProps.value])
 
-  const prefixCls = getPrefixCls('checkbox', customizePrefixCls);
-  const [wrapSSR, hashId] = useStyle(prefixCls);
+  const prefixCls = getPrefixCls('checkbox', customizePrefixCls)
+  const [wrapSSR, hashId] = useStyle(prefixCls)
 
-  const checkboxProps: CheckboxProps = { ...restProps };
+  const checkboxProps: CheckboxProps = { ...restProps }
   if (checkboxGroup && !skipGroup) {
     checkboxProps.onChange = (...args) => {
       if (restProps.onChange) {
-        restProps.onChange(...args);
+        restProps.onChange(...args)
       }
       if (checkboxGroup.toggleOption) {
-        checkboxGroup.toggleOption({ label: children, value: restProps.value });
+        checkboxGroup.toggleOption({ label: children, value: restProps.value })
       }
-    };
-    checkboxProps.name = checkboxGroup.name;
-    checkboxProps.checked = checkboxGroup.value.indexOf(restProps.value) !== -1;
+    }
+    checkboxProps.name = checkboxGroup.name
+    checkboxProps.checked = checkboxGroup.value.includes(restProps.value)
   }
   const classString = classNames(
     {
@@ -110,14 +110,14 @@ const InternalCheckbox: React.ForwardRefRenderFunction<HTMLInputElement, Checkbo
     },
     className,
     hashId,
-  );
+  )
   const checkboxClass = classNames(
     {
       [`${prefixCls}-indeterminate`]: indeterminate,
     },
     hashId,
-  );
-  const ariaChecked = indeterminate ? 'mixed' : undefined;
+  )
+  const ariaChecked = indeterminate ? 'mixed' : undefined
   return wrapSSR(
     // eslint-disable-next-line jsx-a11y/label-has-associated-control
     <label
@@ -136,10 +136,10 @@ const InternalCheckbox: React.ForwardRefRenderFunction<HTMLInputElement, Checkbo
       />
       {children !== undefined && <span>{children}</span>}
     </label>,
-  );
-};
+  )
+}
 
-const Checkbox = React.forwardRef<unknown, CheckboxProps>(InternalCheckbox);
-Checkbox.displayName = 'Checkbox';
+const Checkbox = React.forwardRef<unknown, CheckboxProps>(InternalCheckbox)
+Checkbox.displayName = 'Checkbox'
 
-export default Checkbox;
+export default Checkbox

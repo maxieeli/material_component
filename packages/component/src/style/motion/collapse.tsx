@@ -1,7 +1,7 @@
-import type { AliasToken, GenerateStyle } from '../../theme';
-import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook';
+import type { AliasToken, GenerateStyle } from '../../theme'
+import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook'
 
-const genCollapseMotion: GenerateStyle<TokenWithCommonCls<AliasToken>> = token => ({
+const genCollapseMotion: GenerateStyle<TokenWithCommonCls<AliasToken>> = (token) => ({
   [token.componentCls]: {
     // For common/openAnimation
     [`${token.muiCls}-motion-collapse-legacy`]: {
@@ -19,6 +19,6 @@ const genCollapseMotion: GenerateStyle<TokenWithCommonCls<AliasToken>> = token =
         opacity ${token.motionDurationMid} ${token.motionEaseInOut} !important`,
     },
   },
-});
+})
 
-export default genCollapseMotion;
+export default genCollapseMotion

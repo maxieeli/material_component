@@ -5,11 +5,11 @@ import { ConfigContext } from '../Provider'
 import DisabledContext from '../Provider/DisabledContext'
 import type { SizeType } from '../Provider/SizeContext'
 import SizeContext from '../Provider/SizeContext'
-import { cloneElement } from '../utils/reactNode'
+import { useCompactItemContext } from '../Gap/Compact'
+import { cloneElement, isFragment } from '../utils/reactNode'
 import { tuple } from '../utils/type'
 import Group, { GroupSizeContext } from './ButtonGroup'
 import LoadingIcon from './LoadingIcon'
-
 // CSSINJS
 import useStyle from './styled'
 
@@ -21,10 +21,6 @@ function isString(str: any) {
 
 function isUnBorderedButtonType(type: ButtonType | undefined) {
   return type === 'text' || type === 'link'
-}
-
-function isReactFragment(node: React.ReactNode) {
-  return React.isValidElement(node) && node.type === React.Fragment
 }
 
 // Insert one space between two chinese characters automatically.
@@ -48,7 +44,7 @@ function insertSpace(child: React.ReactElement | string | number, needInserted: 
   if (typeof child === 'string') {
     return isTwoCNChar(child) ? <span>{child.split('').join(SPACE)}</span> : <span>{child}</span>
   }
-  if (isReactFragment(child)) {
+  if (isFragment(child)) {
     return <span>{child}</span>
   }
   return child
@@ -57,7 +53,7 @@ function insertSpace(child: React.ReactElement | string | number, needInserted: 
 function spaceChildren(children: React.ReactNode, needInserted: boolean) {
   let isPrevChildPure: boolean = false
   const childList: React.ReactNode[] = []
-  React.Children.forEach(children, child => {
+  React.Children.forEach(children, (child) => {
     const type = typeof child
     const isCurrentChildPure = type === 'string' || type === 'number'
     if (isPrevChildPure && isCurrentChildPure) {
@@ -72,7 +68,7 @@ function spaceChildren(children: React.ReactNode, needInserted: boolean) {
   })
 
   // Pass to React.Children.map to auto fill key
-  return React.Children.map(childList, child =>
+  return React.Children.map(childList, (child) =>
     insertSpace(child as React.ReactElement | string | number, needInserted),
   )
 }
@@ -95,11 +91,7 @@ export function convertLegacyProps(type?: LegacyButtonType): ButtonProps {
 export interface BaseButtonProps {
   type?: ButtonType
   icon?: React.ReactNode
-  /**
-   * Shape of Button
-   *
-   * @default default
-   */
+  // Shape of Button
   shape?: ButtonShape
   size?: SizeType
   disabled?: boolean
@@ -127,8 +119,9 @@ export type NativeButtonProps = {
 
 export type ButtonProps = Partial<AnchorButtonProps & NativeButtonProps>
 
-interface CompoundedComponent
-  extends React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLElement>> {
+type CompoundedComponent = React.ForwardRefExoticComponent<
+  ButtonProps & React.RefAttributes<HTMLElement>
+> & {
   Group: typeof Group
   /** @internal */
   __MUI_BUTTON: boolean
@@ -150,6 +143,8 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
     icon,
     ghost = false,
     block = false,
+    /** If we extract items here, we don't need use omit.js */
+    // React does not recognize the `htmlType` prop on a DOM element. Here we pick it out of `rest`.
     htmlType = 'button' as ButtonProps['htmlType'],
     ...rest
   } = props
@@ -169,7 +164,6 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
   const [innerLoading, setLoading] = React.useState<Loading>(!!loading)
   const [hasTwoCNChar, setHasTwoCNChar] = React.useState(false)
   const buttonRef = (ref as any) || React.createRef<HTMLElement>()
-
   const isNeedInserted = () =>
     React.Children.count(children) === 1 && !icon && !isUnBorderedButtonType(type)
 
@@ -205,8 +199,6 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
 
     return () => {
       if (delayTimer) {
-        // in order to not perform a React state update on an unmounted component
-        // and clear timer after 'loadingOrDelay' updated.
         window.clearTimeout(delayTimer)
         delayTimer = null
       }
@@ -224,9 +216,11 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
     (onClick as React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>)?.(e)
   }
 
+  const { compactSize, compactItemClassnames } = useCompactItemContext(prefixCls)
+
   // @ts-ignore
   const sizeClassNameMap = { large: 'lg', small: 'sm', middle: undefined }
-  const sizeFullname = groupSize || customizeSize || size
+  const sizeFullname = compactSize || groupSize || customizeSize || size
   const sizeCls = sizeFullname ? sizeClassNameMap[sizeFullname] || '' : ''
 
   const iconType = innerLoading ? 'loading' : icon
@@ -248,6 +242,7 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
       [`${prefixCls}-dangerous`]: !!danger,
       [`${prefixCls}-disabled`]: linkButtonRestProps.href !== undefined && mergedDisabled,
     },
+    compactItemClassnames,
     className,
   )
 
@@ -258,10 +253,9 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
       <LoadingIcon existIcon={!!icon} prefixCls={prefixCls} loading={!!innerLoading} />
     )
 
-  const kids =
-    children || children === 0
-      ? spaceChildren(children, isNeedInserted())
-      : null
+  const kids = children || children === 0
+    ? spaceChildren(children, isNeedInserted())
+    : null
 
   if (linkButtonRestProps.href !== undefined) {
     return wrapSSR(
@@ -292,7 +286,6 @@ const InternalButton: React.ForwardRefRenderFunction<unknown, ButtonProps> = (pr
 const Button = React.forwardRef<unknown, ButtonProps>(InternalButton) as CompoundedComponent
 
 Button.displayName = 'Button'
-
 Button.Group = Group
 Button.__MUI_BUTTON = true
 

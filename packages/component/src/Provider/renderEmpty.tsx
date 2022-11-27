@@ -1,12 +1,12 @@
-import * as React from 'react';
-import type { ConfigConsumerProps } from '.';
-import { ConfigConsumer } from '.';
-import Empty from '../Empty/NoData';
+import * as React from 'react'
+import type { ConfigConsumerProps } from '.'
+import { ConfigConsumer } from '.'
+import Empty from '../Empty/NoData'
 
 const defaultRenderEmpty = (componentName?: string): React.ReactNode => (
   <ConfigConsumer>
     {({ getPrefixCls }: ConfigConsumerProps) => {
-      const prefix = getPrefixCls('empty');
+      const prefix = getPrefixCls('empty')
 
       switch (componentName) {
         case 'Table':
@@ -18,8 +18,8 @@ const defaultRenderEmpty = (componentName?: string): React.ReactNode => (
       }
     }}
   </ConfigConsumer>
-);
+)
 
-export type RenderEmptyHandler = typeof defaultRenderEmpty;
+export type RenderEmptyHandler = typeof defaultRenderEmpty
 
-export default defaultRenderEmpty;
+export default defaultRenderEmpty

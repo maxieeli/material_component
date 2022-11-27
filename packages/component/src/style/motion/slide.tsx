@@ -1,10 +1,10 @@
-import type { CSSInterpolation } from '@developerli/styled';
-import { Keyframes } from '@developerli/styled';
-import type { AliasToken } from '../../theme';
-import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook';
-import { initMotion } from './motion';
+import type { CSSInterpolation } from '@developerli/styled'
+import { Keyframes } from '@developerli/styled'
+import type { AliasToken } from '../../theme'
+import type { TokenWithCommonCls } from '../../theme/utils/genComponentStyleHook'
+import { initMotion } from './motion'
 
-export const slideUpIn = new Keyframes('antSlideUpIn', {
+export const slideUpIn = new Keyframes('muiSlideUpIn', {
   '0%': {
     transform: 'scaleY(0.8)',
     transformOrigin: '0% 0%',
@@ -16,9 +16,9 @@ export const slideUpIn = new Keyframes('antSlideUpIn', {
     transformOrigin: '0% 0%',
     opacity: 1,
   },
-});
+})
 
-export const slideUpOut = new Keyframes('antSlideUpOut', {
+export const slideUpOut = new Keyframes('muiSlideUpOut', {
   '0%': {
     transform: 'scaleY(1)',
     transformOrigin: '0% 0%',
@@ -30,9 +30,9 @@ export const slideUpOut = new Keyframes('antSlideUpOut', {
     transformOrigin: '0% 0%',
     opacity: 0,
   },
-});
+})
 
-export const slideDownIn = new Keyframes('antSlideDownIn', {
+export const slideDownIn = new Keyframes('muiSlideDownIn', {
   '0%': {
     transform: 'scaleY(0.8)',
     transformOrigin: '100% 100%',
@@ -44,9 +44,9 @@ export const slideDownIn = new Keyframes('antSlideDownIn', {
     transformOrigin: '100% 100%',
     opacity: 1,
   },
-});
+})
 
-export const slideDownOut = new Keyframes('antSlideDownOut', {
+export const slideDownOut = new Keyframes('muiSlideDownOut', {
   '0%': {
     transform: 'scaleY(1)',
     transformOrigin: '100% 100%',
@@ -58,9 +58,9 @@ export const slideDownOut = new Keyframes('antSlideDownOut', {
     transformOrigin: '100% 100%',
     opacity: 0,
   },
-});
+})
 
-export const slideLeftIn = new Keyframes('antSlideLeftIn', {
+export const slideLeftIn = new Keyframes('muiSlideLeftIn', {
   '0%': {
     transform: 'scaleX(0.8)',
     transformOrigin: '0% 0%',
@@ -72,9 +72,9 @@ export const slideLeftIn = new Keyframes('antSlideLeftIn', {
     transformOrigin: '0% 0%',
     opacity: 1,
   },
-});
+})
 
-export const slideLeftOut = new Keyframes('antSlideLeftOut', {
+export const slideLeftOut = new Keyframes('muiSlideLeftOut', {
   '0%': {
     transform: 'scaleX(1)',
     transformOrigin: '0% 0%',
@@ -86,9 +86,9 @@ export const slideLeftOut = new Keyframes('antSlideLeftOut', {
     transformOrigin: '0% 0%',
     opacity: 0,
   },
-});
+})
 
-export const slideRightIn = new Keyframes('antSlideRightIn', {
+export const slideRightIn = new Keyframes('muiSlideRightIn', {
   '0%': {
     transform: 'scaleX(0.8)',
     transformOrigin: '100% 0%',
@@ -100,9 +100,9 @@ export const slideRightIn = new Keyframes('antSlideRightIn', {
     transformOrigin: '100% 0%',
     opacity: 1,
   },
-});
+})
 
-export const slideRightOut = new Keyframes('antSlideRightOut', {
+export const slideRightOut = new Keyframes('muiSlideRightOut', {
   '0%': {
     transform: 'scaleX(1)',
     transformOrigin: '100% 0%',
@@ -114,9 +114,9 @@ export const slideRightOut = new Keyframes('antSlideRightOut', {
     transformOrigin: '100% 0%',
     opacity: 0,
   },
-});
+})
 
-type SlideMotionTypes = 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right';
+type SlideMotionTypes = 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right'
 const slideMotion: Record<SlideMotionTypes, { inKeyframes: Keyframes; outKeyframes: Keyframes }> = {
   'slide-up': {
     inKeyframes: slideUpIn,
@@ -134,15 +134,15 @@ const slideMotion: Record<SlideMotionTypes, { inKeyframes: Keyframes; outKeyfram
     inKeyframes: slideRightIn,
     outKeyframes: slideRightOut,
   },
-};
+}
 
 export const initSlideMotion = (
   token: TokenWithCommonCls<AliasToken>,
   motionName: SlideMotionTypes,
 ): CSSInterpolation => {
-  const { muiCls } = token;
-  const motionCls = `${muiCls}-${motionName}`;
-  const { inKeyframes, outKeyframes } = slideMotion[motionName];
+  const { muiCls } = token
+  const motionCls = `${muiCls}-${motionName}`
+  const { inKeyframes, outKeyframes } = slideMotion[motionName]
 
   return [
     initMotion(motionCls, inKeyframes, outKeyframes, token.motionDurationMid),
@@ -160,5 +160,5 @@ export const initSlideMotion = (
         animationTimingFunction: token.motionEaseInQuint,
       },
     },
-  ];
-};
+  ]
+}

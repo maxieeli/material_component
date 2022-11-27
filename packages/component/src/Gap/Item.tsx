@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { SpaceContext } from '.'
+import { GapContext } from '.'
 
 export interface ItemProps {
   className: string
@@ -23,7 +23,7 @@ export default function Item({
   const {
     horizontalSize, verticalSize,
     latestIndex, supportFlexGap,
-  } = React.useContext(SpaceContext)
+  } = React.useContext(GapContext)
 
   let style: React.CSSProperties = {}
 

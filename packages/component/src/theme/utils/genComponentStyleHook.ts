@@ -1,38 +1,34 @@
-import type { CSSInterpolation } from '@developerli/styled';
-import { useStyleRegister } from '@developerli/styled';
-import { useContext } from 'react';
-import { genFontStyle, genLinkStyle } from '../../style';
-import { ConfigContext } from '../../Provider/context';
-import type { UseComponentStyleResult } from '../index';
-import { mergeToken, statisticToken, useToken } from '../index';
-import type { ComponentTokenMap, GlobalToken } from '../interface';
+import type { CSSInterpolation } from '@developerli/styled'
+import { useStyleRegister } from '@developerli/styled'
+import { useContext } from 'react'
+import { genCommonStyle, genLinkStyle } from '../../style'
+import { ConfigContext } from '../../Provider/context'
+import type { UseComponentStyleResult } from '../index'
+import { mergeToken, statisticToken, useToken } from '../index'
+import type { ComponentTokenMap, GlobalToken } from '../interface'
 
-export type OverrideTokenWithoutDerivative = ComponentTokenMap;
-export type OverrideComponent = keyof OverrideTokenWithoutDerivative;
+export type OverrideTokenWithoutDerivative = ComponentTokenMap
+export type OverrideComponent = keyof OverrideTokenWithoutDerivative
 export type GlobalTokenWithComponent<ComponentName extends OverrideComponent> = GlobalToken &
-  ComponentTokenMap[ComponentName];
+  ComponentTokenMap[ComponentName]
 
 export interface StyleInfo<ComponentName extends OverrideComponent> {
-  hashId: string;
-  prefixCls: string;
-  rootPrefixCls: string;
-  iconPrefixCls: string;
-  overrideComponentToken: ComponentTokenMap[ComponentName];
+  hashId: string
+  prefixCls: string
+  rootPrefixCls: string
+  iconPrefixCls: string
+  overrideComponentToken: ComponentTokenMap[ComponentName]
 }
 
 export type TokenWithCommonCls<T> = T & {
-  /** Wrap component class with `.` prefix */
-  componentCls: string;
-  /** Origin prefix which do not have `.` prefix */
-  prefixCls: string;
-  /** Wrap icon class with `.` prefix */
-  iconCls: string;
-  /** Wrap ant prefixCls class with `.` prefix */
-  muiCls: string;
-};
+  componentCls: string
+  prefixCls: string
+  iconCls: string
+  muiCls: string
+}
 export type FullToken<ComponentName extends OverrideComponent> = TokenWithCommonCls<
   GlobalTokenWithComponent<ComponentName>
->;
+>
 
 export default function genComponentStyleHook<ComponentName extends OverrideComponent>(
   component: ComponentName,
@@ -42,33 +38,29 @@ export default function genComponentStyleHook<ComponentName extends OverrideComp
     | ((token: GlobalToken) => OverrideTokenWithoutDerivative[ComponentName]),
 ) {
   return (prefixCls: string): UseComponentStyleResult => {
-    const [theme, token, hashId] = useToken();
-    const { getPrefixCls, iconPrefixCls } = useContext(ConfigContext);
-    const rootPrefixCls = getPrefixCls();
+    const [theme, token, hashId] = useToken()
+    const { getPrefixCls, iconPrefixCls } = useContext(ConfigContext)
+    const rootPrefixCls = getPrefixCls()
 
-    // Generate style for all a tags in component.
     useStyleRegister({ theme, token, hashId, path: ['Shared', rootPrefixCls] }, () => [
       {
-        // Link
         '&': genLinkStyle(token),
       },
-      genFontStyle(token, rootPrefixCls),
-    ]);
+    ])
 
     return [
       // @ts-ignore
       useStyleRegister(
         { theme, token, hashId, path: [component, prefixCls, iconPrefixCls] },
         () => {
-          const { token: proxyToken, flush } = statisticToken(token);
+          const { token: proxyToken, flush } = statisticToken(token)
 
           const defaultComponentToken = typeof getDefaultToken === 'function'
-            // @ts-ignore
             ? getDefaultToken(proxyToken)
-            : getDefaultToken;
-          const mergedComponentToken = { ...defaultComponentToken, ...token[component] };
+            : getDefaultToken
+          const mergedComponentToken = { ...defaultComponentToken, ...token[component] }
 
-          const componentCls = `.${prefixCls}`;
+          const componentCls = `.${prefixCls}`
           const mergedToken = mergeToken<
             TokenWithCommonCls<GlobalTokenWithComponent<OverrideComponent>>
           >(
@@ -77,10 +69,10 @@ export default function genComponentStyleHook<ComponentName extends OverrideComp
               componentCls,
               prefixCls,
               iconCls: `.${iconPrefixCls}`,
-              muiCls: `.${rootPrefixCls}`,
+              antCls: `.${rootPrefixCls}`,
             },
             mergedComponentToken,
-          );
+          )
 
           const styleInterpolation = styleFn(mergedToken as unknown as FullToken<ComponentName>, {
             hashId,
@@ -88,12 +80,12 @@ export default function genComponentStyleHook<ComponentName extends OverrideComp
             rootPrefixCls,
             iconPrefixCls,
             overrideComponentToken: token[component],
-          });
-          flush(component, mergedComponentToken);
-          return styleInterpolation;
+          })
+          flush(component, mergedComponentToken)
+          return [genCommonStyle(token, prefixCls), styleInterpolation]
         },
       ),
       hashId,
-    ];
-  };
+    ]
+  }
 }

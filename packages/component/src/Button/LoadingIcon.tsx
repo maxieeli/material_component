@@ -1,27 +1,28 @@
-import CSSMotion from 'rc-motion';
-import React from 'react';
+import CSSMotion from 'rc-motion'
+import React from 'react'
 import Loading from '../Loading'
+
 export interface LoadingIconProps {
-  prefixCls: string;
-  existIcon: boolean;
-  loading?: boolean | object;
+  prefixCls: string
+  existIcon: boolean
+  loading?: boolean | object
 }
-const getCollapsedWidth = () => ({ width: 0, opacity: 0, transform: 'scale(0)' });
+const getCollapsedWidth = () => ({ width: 0, opacity: 0, transform: 'scale(0)' })
 const getRealWidth = (node: HTMLElement) => ({
   width: node.scrollWidth,
   opacity: 1,
   transform: 'scale(1)',
-});
+})
 
 const LoadingIcon: React.FC<LoadingIconProps> = ({ prefixCls, loading, existIcon }) => {
-  const visible = !!loading;
+  const visible = !!loading
 
   if (existIcon) {
     return (
       <span className={`${prefixCls}-loading-icon`}>
         <Loading />
       </span>
-    );
+    )
   }
 
   return (
@@ -43,7 +44,7 @@ const LoadingIcon: React.FC<LoadingIconProps> = ({ prefixCls, loading, existIcon
         </span>
       )}
     </CSSMotion>
-  );
-};
+  )
+}
 
-export default LoadingIcon;
+export default LoadingIcon

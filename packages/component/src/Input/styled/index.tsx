@@ -222,7 +222,7 @@ export const genInputGroupStyle = (token: InputToken): CSSObject => {
         borderInlineEndWidth: token.controlLineWidth,
       },
 
-      // Undo float for .ant-input-group .ant-input
+      // Undo float for
       [`.${prefixCls}`]: {
         float: 'none',
       },

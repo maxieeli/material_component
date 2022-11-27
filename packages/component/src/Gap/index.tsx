@@ -5,23 +5,23 @@ import { ConfigContext } from '../Provider'
 import type { SizeType } from '../Provider/SizeContext'
 import useFlexGapSupport from '../utils/useFlexGapSupport'
 import Item from './Item'
-
+import Compact from './Compact'
 import useStyle from './styled'
 
-export const SpaceContext = React.createContext({
+export const GapContext = React.createContext({
   latestIndex: 0,
   horizontalSize: 0,
   verticalSize: 0,
   supportFlexGap: false,
 })
 
-export type SpaceSize = SizeType | number
+export type GapSize = SizeType | number
 
-export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface GapProps extends React.HTMLAttributes<HTMLDivElement> {
   prefixCls?: string
   className?: string
   style?: React.CSSProperties
-  size?: SpaceSize | [SpaceSize, SpaceSize]
+  size?: GapSize | [GapSize, GapSize]
   direction?: 'horizontal' | 'vertical'
   // No `stretch` since many components do not support that.
   align?: 'start' | 'end' | 'center' | 'baseline'
@@ -29,21 +29,21 @@ export interface SpaceProps extends React.HTMLAttributes<HTMLDivElement> {
   wrap?: boolean
 }
 
-const spaceSize = {
+const gapSize = {
   small: 8,
   middle: 16,
   large: 24,
 }
 
-function getNumberSize(size: SpaceSize) {
-  return typeof size === 'string' ? spaceSize[size] : size || 0
+function getNumberSize(size: GapSize) {
+  return typeof size === 'string' ? gapSize[size] : size || 0
 }
 
-const Space: React.FC<SpaceProps> = props => {
-  const { getPrefixCls, space } = React.useContext(ConfigContext)
+const Gap: React.FC<GapProps> = (props) => {
+  const { getPrefixCls, gap } = React.useContext(ConfigContext)
 
   const {
-    size = space?.size || 'small',
+    size = gap?.size || 'small',
     align,
     className,
     children,
@@ -59,7 +59,7 @@ const Space: React.FC<SpaceProps> = props => {
 
   const [horizontalSize, verticalSize] = React.useMemo(
     () =>
-      ((Array.isArray(size) ? size : [size, size]) as [SpaceSize, SpaceSize]).map(item =>
+      ((Array.isArray(size) ? size : [size, size]) as [GapSize, GapSize]).map((item) =>
         getNumberSize(item),
       ),
     [size],
@@ -68,7 +68,7 @@ const Space: React.FC<SpaceProps> = props => {
   const childNodes = toArray(children, { keepEmpty: true })
 
   const mergedAlign = align === undefined && direction === 'horizontal' ? 'center' : align
-  const prefixCls = getPrefixCls('space', customizePrefixCls)
+  const prefixCls = getPrefixCls('gap', customizePrefixCls)
   const [wrapSSR, hashId] = useStyle(prefixCls)
 
   const cn = classNames(
@@ -109,12 +109,12 @@ const Space: React.FC<SpaceProps> = props => {
     )
   })
 
-  const spaceContext = React.useMemo(
+  const gapContext = React.useMemo(
     () => ({ horizontalSize, verticalSize, latestIndex, supportFlexGap }),
     [horizontalSize, verticalSize, latestIndex, supportFlexGap],
   )
 
-  // =========================== Render ===========================
+  // Render
   if (childNodes.length === 0) {
     return null
   }
@@ -144,9 +144,16 @@ const Space: React.FC<SpaceProps> = props => {
       }}
       {...otherProps}
     >
-      <SpaceContext.Provider value={spaceContext}>{nodes}</SpaceContext.Provider>
+      <GapContext.Provider value={gapContext}>{nodes}</GapContext.Provider>
     </div>,
   )
 }
 
-export default Space
+type CompoundedComponent = React.FC<GapProps> & {
+  Compact: typeof Compact
+}
+
+const CompoundedGap = Gap as CompoundedComponent
+CompoundedGap.Compact = Compact
+
+export default CompoundedGap

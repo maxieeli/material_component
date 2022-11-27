@@ -1,45 +1,50 @@
-import type { CSSObject, Keyframes } from '@developerli/styled';
+import type { CSSObject, Keyframes } from '@developerli/styled'
 
 const initMotionCommon = (duration: string): CSSObject => ({
   animationDuration: duration,
   animationFillMode: 'both',
-});
+})
 
 const initMotionCommonLeave = (duration: string): CSSObject => ({
   animationDuration: duration,
   animationFillMode: 'both',
-});
+})
 
 export const initMotion = (
   motionCls: string,
   inKeyframes: Keyframes,
   outKeyframes: Keyframes,
   duration: string,
-): CSSObject => ({
-  [`
-    ${motionCls}-enter,
-    ${motionCls}-appear
-  `]: {
-    ...initMotionCommon(duration),
-    animationPlayState: 'paused',
-  },
+  sameLevel = false,
+): CSSObject => {
+  const sameLevelPrefix = sameLevel ? '&' : ''
 
-  [`${motionCls}-leave`]: {
-    ...initMotionCommonLeave(duration),
-    animationPlayState: 'paused',
-  },
+  return {
+    [`
+      ${sameLevelPrefix}${motionCls}-enter,
+      ${sameLevelPrefix}${motionCls}-appear
+    `]: {
+      ...initMotionCommon(duration),
+      animationPlayState: 'paused',
+    },
 
-  [`
-    ${motionCls}-enter${motionCls}-enter-active,
-    ${motionCls}-appear${motionCls}-appear-active
-  `]: {
-    animationName: inKeyframes,
-    animationPlayState: 'running',
-  },
+    [`${sameLevelPrefix}${motionCls}-leave`]: {
+      ...initMotionCommonLeave(duration),
+      animationPlayState: 'paused',
+    },
 
-  [`${motionCls}-leave${motionCls}-leave-active`]: {
-    animationName: outKeyframes,
-    animationPlayState: 'running',
-    pointerEvents: 'none',
-  },
-});
+    [`
+      ${sameLevelPrefix}${motionCls}-enter${motionCls}-enter-active,
+      ${sameLevelPrefix}${motionCls}-appear${motionCls}-appear-active
+    `]: {
+      animationName: inKeyframes,
+      animationPlayState: 'running',
+    },
+
+    [`${sameLevelPrefix}${motionCls}-leave${motionCls}-leave-active`]: {
+      animationName: outKeyframes,
+      animationPlayState: 'running',
+      pointerEvents: 'none',
+    },
+  }
+}

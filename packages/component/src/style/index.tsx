@@ -1,8 +1,8 @@
-import type { CSSObject } from '@developerli/styled';
-import type { DerivativeToken } from '../theme';
+import type { CSSObject } from '@developerli/styled'
+import type { DerivativeToken } from '../theme'
 
-export { operationUnit } from './operationUnit';
-export { roundedArrow } from './roundedArrow';
+export { operationUnit } from './operationUnit'
+export { roundedArrow } from './roundedArrow'
 
 export const resetComponent = (token: DerivativeToken): CSSObject => ({
   boxSizing: 'border-box',
@@ -13,7 +13,7 @@ export const resetComponent = (token: DerivativeToken): CSSObject => ({
   lineHeight: token.lineHeight,
   listStyle: 'none',
   fontFamily: token.fontFamily,
-});
+})
 
 export const resetIcon = (): CSSObject => ({
   display: 'inline-flex',
@@ -39,7 +39,7 @@ export const resetIcon = (): CSSObject => ({
   '& &-icon': {
     display: 'block',
   },
-});
+})
 
 export const clearFix = (): CSSObject => ({
   '&::before': {
@@ -52,7 +52,7 @@ export const clearFix = (): CSSObject => ({
     clear: 'both',
     content: '""',
   },
-});
+})
 
 export const genLinkStyle = (token: DerivativeToken): CSSObject => ({
   a: {
@@ -86,27 +86,53 @@ export const genLinkStyle = (token: DerivativeToken): CSSObject => ({
       cursor: 'not-allowed',
     },
   },
-});
+})
 
 export const genFontStyle = (token: DerivativeToken, rootPrefixCls: string) => {
-  const { fontFamily, fontSize } = token;
+  const { fontFamily, fontSize } = token
 
   return {
     [`[class^="${rootPrefixCls}-"], [class*=" ${rootPrefixCls}-"]`]: {
       fontFamily,
       fontSize,
     },
-  };
-};
+  }
+}
 
 export const genFocusOutline = (token: DerivativeToken): CSSObject => ({
   outline: `${token.lineWidth * 4}px solid ${token.colorPrimaryBorder}`,
   outlineOffset: 1,
   transition: 'outline-offset 0s, outline 0s',
-});
+})
 
 export const genFocusStyle = (token: DerivativeToken): CSSObject => ({
   '&:focus-visible': {
     ...genFocusOutline(token),
   },
-});
+})
+
+export const genCommonStyle = (token: DerivativeToken, componentPrefixCls: string): CSSObject => {
+  const { fontFamily, fontSize } = token
+
+  const rootPrefixSelector = `[class^="${componentPrefixCls}"], [class*=" ${componentPrefixCls}"]`
+
+  return {
+    [rootPrefixSelector]: {
+      fontFamily,
+      fontSize,
+      boxSizing: 'border-box',
+
+      '&::before, &::after': {
+        boxSizing: 'border-box',
+      },
+
+      [rootPrefixSelector]: {
+        boxSizing: 'border-box',
+
+        '&::before, &::after': {
+          boxSizing: 'border-box',
+        },
+      },
+    },
+  }
+}

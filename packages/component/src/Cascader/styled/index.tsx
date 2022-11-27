@@ -81,7 +81,7 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
               verticalAlign: 'top',
               listStyle: 'none',
               '&:not(:last-child)': {
-                borderInlineEnd: `${token.controlLineWidth}px ${token.controlLineType} ${token.colorSplit}`,
+                borderInlineEnd: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
               },
 
               '&-item': {
@@ -95,7 +95,6 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
                 textOverflow: 'ellipsis',
                 cursor: 'pointer',
                 transition: `all ${token.motionDurationFast}`,
-                borderRadius: token.radiusSM,
 
                 '&:hover': {
                   background: token.controlItemBgHover,
@@ -107,7 +106,7 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
                   '&:hover': {
                     background: 'transparent',
                   },
-                  'svg': {
+                  [iconCls]: {
                     color: token.colorTextDisabled,
                   }
                 },
@@ -123,8 +122,14 @@ const genBaseStyle: GenerateStyle<CascaderToken> = token => {
                   flex: 'auto',
                 },
                 
-                ['> svg']: {
-                  fontSize: token.fontSizeXL,
+                [iconCls]: {
+                  marginInlineStart: token.paddingXXS,
+                  color: token.colorTextDescription,
+                  fontSize: token.fontSizeIcon,
+                  lineHeight: 0,
+                  ['> svg']: {
+                    fontSize: token.fontSizeXL,
+                  }
                 },
 
                 '&-keyword': {

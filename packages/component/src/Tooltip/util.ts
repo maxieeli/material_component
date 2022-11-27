@@ -15,7 +15,7 @@ export function parseColor(prefixCls: string, color?: string) {
   if (color && !PresetColorRegex.test(color)) {
     overlayStyle = { background: color }
     // @ts-ignore
-    arrowStyle = { '--antd-arrow-background-color': color }
+    arrowStyle = { '--mui-arrow-background-color': color }
   }
 
   return { className, overlayStyle, arrowStyle }

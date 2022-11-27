@@ -1,37 +1,36 @@
-import { TinyColor } from '@ctrl/tinycolor';
-import type { AliasToken, MapToken, OverrideToken, SeedToken } from '../interface';
-import seedToken from '../themes/seed';
+import { TinyColor } from '@ctrl/tinycolor'
+import type { AliasToken, MapToken, OverrideToken, SeedToken } from '../interface'
+import seedToken from '../themes/seed'
 
-/** Raw merge of `styled` token. Which need additional process */
-type RawMergedToken = MapToken & OverrideToken & { override: Partial<AliasToken> };
+/** Raw merge of token. Which need additional process */
+type RawMergedToken = MapToken & OverrideToken & { override: Partial<AliasToken> }
 
 /**
  * Seed (designer) > Derivative (designer) > Alias (developer).
- *
  * Merge seed & derivative & override token and generate alias token for developer.
  */
 export default function formatToken(derivativeToken: RawMergedToken): AliasToken {
-  const { override, ...restToken } = derivativeToken;
-  const overrideTokens = { ...override };
+  const { override, ...restToken } = derivativeToken
+  const overrideTokens = { ...override }
 
-  Object.keys(seedToken).forEach(token => {
-    delete overrideTokens[token as keyof SeedToken];
-  });
+  Object.keys(seedToken).forEach((token) => {
+    delete overrideTokens[token as keyof SeedToken]
+  })
 
   const mergedToken = {
     ...restToken,
     ...overrideTokens,
-  };
+  }
 
-  const { fontSizes, lineHeights } = mergedToken;
-  const screenXS = 480;
-  const screenSM = 576;
-  const screenMD = 768;
-  const screenLG = 992;
-  const screenXL = 1200;
-  const screenXXL = 1600;
+  const { fontSizes, lineHeights } = mergedToken
+  const screenXS = 480
+  const screenSM = 576
+  const screenMD = 768
+  const screenLG = 992
+  const screenXL = 1200
+  const screenXXL = 1600
 
-  const fontSizeSM = fontSizes[0];
+  const fontSizeSM = fontSizes[0]
 
   // Generate alias token
   const aliasToken: AliasToken = {
@@ -49,7 +48,7 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
 
     // ============== Split ============== //
     colorBorderBg: mergedToken.colorBgContainer,
-    colorSplit: mergedToken.colorBorderSecondary,
+    colorSplit: mergedToken.colorBgContainer,
 
     // ============== Text ============== //
     colorTextPlaceholder: mergedToken.colorTextQuaternary,
@@ -57,6 +56,7 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
     colorTextHeading: mergedToken.colorText,
     colorTextLabel: mergedToken.colorTextSecondary,
     colorTextDescription: mergedToken.colorTextTertiary,
+    colorTextLightSolid: mergedToken.colorWhite,
     colorHighlight: mergedToken.colorError,
     colorBgTextHover: mergedToken.colorFillSecondary,
     colorBgTextActive: mergedToken.colorFill,
@@ -90,7 +90,7 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
     lineHeightHeading5: lineHeights[2],
 
     // Control
-    controlLineWidth: mergedToken.lineWidth,
+    lineWidth: mergedToken.lineWidth,
     controlOutlineWidth: mergedToken.lineWidth * 2,
     // Checkbox size and expand icon size
     controlInteractiveSize: mergedToken.controlHeight / 2,
@@ -102,11 +102,11 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
     controlTmpOutline: mergedToken.colorFillQuaternary,
     controlOutline: mergedToken.colorPrimaryBg,
 
-    controlLineType: mergedToken.lineType,
-    controlRadius: mergedToken.radiusBase,
-    controlRadiusXS: mergedToken.radiusXS,
-    controlRadiusSM: mergedToken.radiusSM,
-    controlRadiusLG: mergedToken.radiusLG,
+    lineType: mergedToken.lineType,
+    borderRadius: mergedToken.borderRadius,
+    borderRadiusXS: mergedToken.borderRadiusXS,
+    borderRadiusSM: mergedToken.borderRadiusSM,
+    borderRadiusLG: mergedToken.borderRadiusLG,
 
     fontWeightStrong: 600,
 
@@ -119,33 +119,39 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
     controlPaddingHorizontal: 12,
     controlPaddingHorizontalSM: 8,
 
-    padding: 16,
-    margin: 16,
+    paddingXXS: mergedToken.sizeXXS,
+    paddingXS: mergedToken.sizeXS,
+    paddingSM: mergedToken.sizeSM,
+    padding: mergedToken.size,
+    paddingMD: mergedToken.sizeMD,
+    paddingLG: mergedToken.sizeLG,
+    paddingXL: mergedToken.sizeXL,
 
-    paddingXXS: 4,
-    paddingXS: 8,
-    paddingSM: 12,
-    paddingLG: 24,
-    paddingXL: 32,
-    paddingTmp: 20,
+    paddingContentHorizontalLG: mergedToken.sizeLG,
+    paddingContentVerticalLG: mergedToken.sizeMS,
+    paddingContentHorizontal: mergedToken.sizeMS,
+    paddingContentVertical: mergedToken.sizeSM,
+    paddingContentHorizontalSM: mergedToken.size,
+    paddingContentVerticalSM: mergedToken.sizeXS,
 
-    marginXXS: 4,
-    marginXS: 8,
-    marginSM: 12,
-    marginLG: 24,
-    marginXL: 32,
-    marginXXL: 48,
-    marginTmp: 20,
+    marginXXS: mergedToken.sizeXXS,
+    marginXS: mergedToken.sizeXS,
+    marginSM: mergedToken.sizeSM,
+    margin: mergedToken.size,
+    marginMD: mergedToken.sizeMD,
+    marginLG: mergedToken.sizeLG,
+    marginXL: mergedToken.sizeXL,
+    marginXXL: mergedToken.sizeXXL,
 
     boxShadow: `
-      0 5px 5px -3px rgb(0, 0, 0 / 20%),
-      0 8px 10px 1px rgb(0, 0, 0 / 14%),
-      0 3px 14px 2px rgb(0, 0, 0 / 12%)
+      0 5px 5px -3px rgb(0 0 0 / 20%),
+      0 8px 10px 1px rgb(0 0 0 / 14%),
+      0 3px 14px 2px rgb(0 0 0 / 12%),
     `,
     boxShadowSecondary: `
-      0 6px 16px 0 rgba(0, 0, 0, 0.08),
-      0 3px 6px -4px rgba(0, 0, 0, 0.12),
-      0 9px 28px 8px rgba(0, 0, 0, 0.05)
+      0 5px 5px -3px rgb(0 0 0 / 20%),
+      0 8px 10px 1px rgb(0 0 0 / 14%),
+      0 3px 14px 2px rgb(0 0 0 / 12%),
     `,
 
     screenXS,
@@ -201,7 +207,7 @@ export default function formatToken(derivativeToken: RawMergedToken): AliasToken
 
     // Override AliasToken
     ...overrideTokens,
-  };
+  }
 
-  return aliasToken;
+  return aliasToken
 }
